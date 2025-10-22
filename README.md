@@ -2,6 +2,8 @@
 
 A premium, futuristic, and interactive website for InfYNova, an Indian AI-powered smartphone brand founded by Robin Singh. The website blends the minimal elegance of Apple, the futuristic glow and glassmorphism of Nothing, and the dynamic storytelling of OnePlus.
 
+Welcome to InfYNova, the flagship web experience for India's next-generation AI smartphone brand.
+
 ## 🚀 Project Structure
 
 ```
@@ -72,7 +74,7 @@ InfYNova-Website/
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Engineerrobin7/InfYNova-Website-.git
    cd InfYNova-Website
    ```
 
