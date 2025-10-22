@@ -1,0 +1,30 @@
+{
+  "name": "infynova-website",
+  "version": "1.0.0",
+  "description": "InfYNova - Building India's Next AI Smartphone Website",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start": "cd frontend && npm run start",
+    "lint": "cd frontend && npm run lint",
+    "install-frontend": "cd frontend && npm install",
+    "install-all": "npm run install-frontend"
+  },
+  "keywords": [
+    "infynova",
+    "ai-smartphone",
+    "india",
+    "technology",
+    "nextjs",
+    "react",
+    "typescript"
+  ],
+  "author": "InfYNova Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/infynova/website.git"
+  },
+  "homepage": "https://infynova.com"
+}
