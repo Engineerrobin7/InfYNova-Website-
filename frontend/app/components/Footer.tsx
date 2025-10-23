@@ -11,7 +11,7 @@ import {
   Smartphone,
   Send
 } from 'lucide-react'
-import Phone3D from './Phone3D'
+import SimplePhone3D from './SimplePhone3D'
 
 const Footer = () => {
   const [email, setEmail] = useState('')
@@ -212,7 +212,7 @@ const Footer = () => {
             transition={{ duration: 1, delay: 0.8 }}
           >
             <div className="relative w-full h-full">
-              <Phone3D />
+              <SimplePhone3D />
               
               {/* Glow effect that reacts to scroll */}
               <motion.div

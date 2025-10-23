@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import Phone3D from './Phone3D'
+import SimplePhone3D from './SimplePhone3D'
 
 const HeroSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -126,7 +126,7 @@ const HeroSection = () => {
               transform: `rotateY(${mousePosition.x * 0.1}deg) rotateX(${-mousePosition.y * 0.1}deg)`
             }}
           >
-            <Phone3D />
+            <SimplePhone3D />
             
             {/* Floating elements */}
             <motion.div

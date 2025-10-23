@@ -62,7 +62,6 @@ const PhoneModel = () => {
         color="#00d4ff"
         anchorX="center"
         anchorY="middle"
-        font="/fonts/inter-bold.woff"
       >
         NovaOS
       </Text>

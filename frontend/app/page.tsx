@@ -9,49 +9,52 @@ import CareersSection from './components/CareersSection'
 import CommunitySection from './components/CommunitySection'
 import Footer from './components/Footer'
 import ParticleBackground from './components/ParticleBackground'
+import ErrorBoundary from './components/ErrorBoundary'
 
 export default function Home() {
   useEffect(() => {
-    // Initialize GSAP animations and scroll triggers
-    const initAnimations = async () => {
-      const { gsap } = await import('gsap')
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
-      
-      gsap.registerPlugin(ScrollTrigger)
-      
-      // Smooth scroll reveal animations
-      gsap.utils.toArray('.reveal').forEach((element: any) => {
-        gsap.fromTo(element, 
-          { opacity: 0, y: 50 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: element,
-              start: 'top 80%',
-              end: 'bottom 20%',
-              toggleActions: 'play none none reverse'
-            }
+    // Initialize scroll reveal animations with Intersection Observer
+    const initAnimations = () => {
+      const revealElements = document.querySelectorAll('.reveal')
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed')
           }
-        )
+        })
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
       })
+
+      revealElements.forEach((element) => {
+        observer.observe(element)
+      })
+
+      return () => {
+        revealElements.forEach((element) => {
+          observer.unobserve(element)
+        })
+      }
     }
-    
-    initAnimations()
+
+    const cleanup = initAnimations()
+    return cleanup
   }, [])
 
   return (
-    <main className="relative min-h-screen bg-nova-black overflow-x-hidden">
-      <ParticleBackground />
-      <HeroSection />
-      <FeaturesSection />
-      <VisionSection />
-      <AboutSection />
-      <CareersSection />
-      <CommunitySection />
-      <Footer />
-    </main>
+    <ErrorBoundary>
+      <main className="relative min-h-screen bg-nova-black overflow-x-hidden">
+        <ParticleBackground />
+        <HeroSection />
+        <FeaturesSection />
+        <VisionSection />
+        <AboutSection />
+        <CareersSection />
+        <CommunitySection />
+        <Footer />
+      </main>
+    </ErrorBoundary>
   )
 }
