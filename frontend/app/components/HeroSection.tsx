@@ -28,6 +28,15 @@ const HeroSection = () => {
   }, [])
 
   const handleCTAClick = () => {
+    // Track analytics event
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'click', {
+        event_category: 'cta',
+        event_label: 'discover_novaos',
+        event_location: 'hero_section'
+      })
+    }
+    
     // Ripple effect
     const button = document.querySelector('.cta-button')
     if (button) {

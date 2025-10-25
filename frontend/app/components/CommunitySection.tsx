@@ -222,26 +222,37 @@ const CommunitySection = () => {
     <section className="relative py-20 lg:py-32 bg-nova-gradient overflow-hidden">
       {/* Background effects */}
       <div className="absolute inset-0">
-        {[...Array(10)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 bg-nova-blue rounded-full opacity-30"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -50, 0],
-              opacity: [0.3, 0.8, 0.3],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: 6 + Math.random() * 4,
-              repeat: Infinity,
-              delay: Math.random() * 6,
-            }}
-          />
-        ))}
+        {[...Array(10)].map((_, i) => {
+          // Use deterministic values based on index to avoid hydration mismatch
+          const positions = [
+            { left: 15, top: 25 }, { left: 80, top: 10 }, { left: 45, top: 70 }, { left: 25, top: 45 },
+            { left: 90, top: 80 }, { left: 10, top: 60 }, { left: 70, top: 20 }, { left: 35, top: 85 },
+            { left: 60, top: 35 }, { left: 85, top: 65 }
+          ]
+          const durations = [6, 8, 7, 9, 6.5, 8.5, 7.5, 9.5, 6.8, 8.2]
+          const delays = [0, 1.5, 3, 4.5, 1, 2.5, 4, 5.5, 0.5, 2]
+          
+          return (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 bg-nova-blue rounded-full opacity-30"
+              style={{
+                left: `${positions[i]?.left || 50}%`,
+                top: `${positions[i]?.top || 50}%`,
+              }}
+              animate={{
+                y: [0, -50, 0],
+                opacity: [0.3, 0.8, 0.3],
+                scale: [1, 1.5, 1],
+              }}
+              transition={{
+                duration: durations[i] || 6,
+                repeat: Infinity,
+                delay: delays[i] || 0,
+              }}
+            />
+          )
+        })}
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

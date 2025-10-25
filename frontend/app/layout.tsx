@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import Analytics from './components/Analytics'
 import './globals.css'
 
 const inter = Inter({ 
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'InfYNova - Building India\'s Next AI Smartphone',
     description: 'Redefining technology, one smart move at a time.',
-    url: 'https://infynova.com',
+    url: 'https://infynova.in',
     siteName: 'InfYNova',
     images: [
       {
@@ -46,6 +47,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <Analytics />
+      </head>
       <body className={inter.className}>
         {children}
       </body>

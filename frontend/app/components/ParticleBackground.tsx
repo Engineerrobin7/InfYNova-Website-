@@ -1,11 +1,17 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const ParticleBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isClient) return
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -95,6 +101,10 @@ const ParticleBackground = () => {
       window.removeEventListener('resize', resizeCanvas)
     }
   }, [])
+
+  if (!isClient) {
+    return null
+  }
 
   return (
     <canvas

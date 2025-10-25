@@ -213,7 +213,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 **InfYNova Team**
 - Email: infynovaindia@gmail.com
-- Website: [InfYNova.com](https://infynova.com)
+- Website: [InfYNova.in](https://infynova.in)
 
 ---
 

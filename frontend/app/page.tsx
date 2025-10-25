@@ -10,6 +10,7 @@ import CommunitySection from './components/CommunitySection'
 import Footer from './components/Footer'
 import ParticleBackground from './components/ParticleBackground'
 import ErrorBoundary from './components/ErrorBoundary'
+import { initScrollTracking, initTimeTracking } from './utils/analytics'
 
 export default function Home() {
   useEffect(() => {
@@ -40,7 +41,16 @@ export default function Home() {
     }
 
     const cleanup = initAnimations()
-    return cleanup
+    
+    // Initialize analytics tracking
+    const cleanupScroll = initScrollTracking()
+    const cleanupTime = initTimeTracking()
+    
+    return () => {
+      cleanup?.()
+      cleanupScroll?.()
+      cleanupTime?.()
+    }
   }, [])
 
   return (

@@ -63,30 +63,43 @@ const Footer = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-nova-midnight via-nova-black to-nova-black" />
         
         {/* Particle system that reacts to scroll speed */}
-        {[...Array(30)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-nova-blue rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -100, 0],
-              opacity: [0, 1, 0],
-              scale: [0, 1, 0],
-            }}
-            transition={{
-              duration: 8 + Math.random() * 4,
-              repeat: Infinity,
-              delay: Math.random() * 8,
-              ease: 'easeInOut',
-            }}
-            style={{
-              animationDuration: `${Math.max(2, 8 - scrollSpeed * 0.1)}s`
-            }}
-          />
-        ))}
+        {[...Array(30)].map((_, i) => {
+          // Use deterministic values based on index to avoid hydration mismatch
+          const positions = [
+            { left: 5, top: 15 }, { left: 95, top: 85 }, { left: 25, top: 45 }, { left: 75, top: 25 },
+            { left: 45, top: 75 }, { left: 15, top: 55 }, { left: 85, top: 35 }, { left: 35, top: 65 },
+            { left: 65, top: 5 }, { left: 55, top: 95 }, { left: 10, top: 30 }, { left: 90, top: 70 },
+            { left: 30, top: 10 }, { left: 70, top: 90 }, { left: 50, top: 50 }, { left: 20, top: 80 },
+            { left: 80, top: 20 }, { left: 40, top: 60 }, { left: 60, top: 40 }, { left: 12, top: 88 },
+            { left: 88, top: 12 }, { left: 32, top: 68 }, { left: 68, top: 32 }, { left: 52, top: 72 },
+            { left: 72, top: 52 }, { left: 8, top: 48 }, { left: 92, top: 28 }, { left: 28, top: 92 },
+            { left: 48, top: 8 }, { left: 78, top: 58 }
+          ]
+          const durations = [8, 10, 9, 11, 7, 12, 8.5, 9.5, 10.5, 7.5, 11.5, 8.2, 9.8, 10.2, 7.8, 11.2, 8.8, 9.2, 10.8, 7.2, 8.3, 9.7, 10.3, 7.7, 11.3, 8.7, 9.3, 10.7, 7.3, 11.7]
+          const delays = [0, 2, 4, 1, 6, 3, 5, 7, 1.5, 3.5, 5.5, 7.5, 0.5, 2.5, 4.5, 6.5, 1.2, 3.2, 5.2, 7.2, 0.8, 2.8, 4.8, 6.8, 1.8, 3.8, 5.8, 7.8, 0.3, 2.3]
+          
+          return (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-nova-blue rounded-full"
+              style={{
+                left: `${positions[i]?.left || 50}%`,
+                top: `${positions[i]?.top || 50}%`,
+              }}
+              animate={{
+                y: [0, -100, 0],
+                opacity: [0, 1, 0],
+                scale: [0, 1, 0],
+              }}
+              transition={{
+                duration: durations[i] || 8,
+                repeat: Infinity,
+                delay: delays[i] || 0,
+                ease: 'easeInOut',
+              }}
+            />
+          )
+        })}
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
