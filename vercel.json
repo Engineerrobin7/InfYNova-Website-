@@ -1,15 +1,8 @@
 {
+  "framework": "nextjs",
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
-  "framework": "nextjs",
   "installCommand": "npm install",
-  "devCommand": "npm run dev",
-  "regions": ["bom1", "sin1"],
-  "functions": {
-    "app/**/*.tsx": {
-      "runtime": "@vercel/node@3"
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",
@@ -31,15 +24,6 @@
           "value": "strict-origin-when-cross-origin"
         }
       ]
-    },
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "https://infynova.in"
-        }
-      ]
     }
   ],
   "redirects": [
@@ -47,12 +31,6 @@
       "source": "/home",
       "destination": "/",
       "permanent": true
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/sitemap.xml",
-      "destination": "/api/sitemap"
     }
   ]
 }
