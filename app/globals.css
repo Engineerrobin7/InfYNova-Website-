@@ -1,184 +1,333 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+@layer base {
+  /* Default theme (Infinova - Purple) */
+  .theme-default {
+    --background: 240 12% 4%;
+    --foreground: 0 0% 98%;
+    
+    --card: 240 10% 5.5%;
+    --card-foreground: 0 0% 98%;
+    
+    --popover: 240 10% 3.5%;
+    --popover-foreground: 0 0% 98%;
+    
+    --primary: 260 86% 65%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 240 8% 12%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --muted: 240 8% 15%;
+    --muted-foreground: 240 5% 64.9%;
+    
+    --accent: 290 70% 60%;
+    --accent-foreground: 0 0% 98%;
+    
+    --destructive: 0 62.8% 50.6%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 240 6% 18%;
+    --input: 240 6% 18%;
+    --ring: 260 86% 65%;
+  }
+
+  /* Nothing theme - Green/gray minimalistic */
+  .theme-nothing {
+    --background: 0 0% 8%;
+    --foreground: 0 0% 98%;
+    
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 98%;
+    
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 98%;
+    
+    --primary: 142 70% 50%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 70%;
+    
+    --accent: 142 50% 45%;
+    --accent-foreground: 0 0% 98%;
+    
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 142 70% 50%;
+  }
+
+  /* OnePlus theme - Red/black sleek */
+  .theme-oneplus {
+    --background: 0 0% 5%;
+    --foreground: 0 0% 98%;
+    
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 98%;
+    
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 98%;
+    
+    --primary: 0 80% 50%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 70%;
+    
+    --accent: 0 80% 45%;
+    --accent-foreground: 0 0% 98%;
+    
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 0 80% 50%;
+  }
+
+  /* Light mode variables */
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    
+    --primary: 260 60% 55%;
+    --primary-foreground: 0 0% 98%;
+    
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 260 60% 55%;
+
+    --radius: 0.75rem;
+  }
+ 
+  .dark {
+    --background: 240 12% 4%;
+    --foreground: 0 0% 98%;
+    
+    --card: 240 10% 5.5%;
+    --card-foreground: 0 0% 98%;
+    
+    --popover: 240 10% 3.5%;
+    --popover-foreground: 0 0% 98%;
+    
+    --primary: 260 86% 65%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 240 8% 12%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --muted: 240 8% 15%;
+    --muted-foreground: 240 5% 64.9%;
+    
+    --accent: 290 70% 60%;
+    --accent-foreground: 0 0% 98%;
+    
+    --destructive: 0 62.8% 50.6%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 240 6% 18%;
+    --input: 240 6% 18%;
+    --ring: 260 86% 65%;
+  }
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-  font-family: 'Inter', 'SF Pro Display', system-ui, sans-serif;
-  background: #0a0a0a;
-  color: #ffffff;
-  scroll-behavior: smooth;
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #1a1a2e;
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(45deg, #00d4ff, #8b5cf6);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(45deg, #00ffff, #a855f7);
-}
-
-/* Glassmorphism utility */
-.glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Neon glow effect */
-.neon-glow {
-  box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-  transition: box-shadow 0.3s ease;
-}
-
-.neon-glow:hover {
-  box-shadow: 0 0 40px rgba(0, 212, 255, 0.8);
-}
-
-/* Particle animation */
-.particle {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background: linear-gradient(45deg, #00d4ff, #8b5cf6);
-  border-radius: 50%;
-  animation: particle 20s linear infinite;
-}
-
-/* Hero phone morph animation */
-.phone-morph {
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.phone-morph:hover {
-  transform: rotateY(15deg) rotateX(5deg) scale(1.05);
-}
-
-/* Feature card hover effects */
-.feature-card {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-style: preserve-3d;
-}
-
-.feature-card:hover {
-  transform: translateY(-10px) rotateX(5deg);
-  box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
-}
-
-/* Timeline styles */
-.timeline-container {
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #00d4ff #1a1a2e;
-}
-
-.timeline-container::-webkit-scrollbar {
-  height: 6px;
-}
-
-.timeline-container::-webkit-scrollbar-track {
-  background: #1a1a2e;
-  border-radius: 3px;
-}
-
-.timeline-container::-webkit-scrollbar-thumb {
-  background: linear-gradient(90deg, #00d4ff, #8b5cf6);
-  border-radius: 3px;
-}
-
-/* Impact meter animation */
-.impact-meter {
-  background: linear-gradient(90deg, #00d4ff 0%, #8b5cf6 100%);
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.8; }
-  50% { opacity: 1; }
-}
-
-/* Button ripple effect */
-.btn-ripple {
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-ripple::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-}
-
-.btn-ripple:active::before {
-  width: 300px;
-  height: 300px;
-}
-
-/* Smooth reveal animations */
-.reveal {
-  opacity: 0;
-  transform: translateY(50px);
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.reveal.revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 2.5rem;
-    line-height: 1.2;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground transition-colors duration-300;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
-  .feature-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  /* Performance optimizations for smoother animations */
+  * {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
   }
   
-  .timeline-container {
-    padding: 1rem;
+  /* Optimize images for WebP format */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  /* Enhanced glass morphism for dark mode */
+  .glass {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 dark:bg-black/20 dark:border-white/5 shadow-lg;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-br from-primary via-purple-500 to-accent bg-clip-text text-transparent;
+  }
+  
+  /* Theme-specific text gradients */
+  .theme-nothing .text-gradient {
+    @apply bg-gradient-to-br from-primary via-green-400 to-accent bg-clip-text text-transparent;
+  }
+  
+  .theme-oneplus .text-gradient {
+    @apply bg-gradient-to-br from-primary via-red-500 to-accent bg-clip-text text-transparent;
+  }
+
+  /* Optimized scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-background/20;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/30 rounded-full transition-colors;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/50;
+  }
+}
+
+@layer utilities {
+  /* Animation utilities */
+  .animate-spin-slow {
+    animation: spin 6s linear infinite;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse 4s ease-in-out infinite;
+  }
+  
+  .animate-fade-up {
+    animation: fadeUp 0.5s ease forwards;
+  }
+  
+  .animate-fade-down {
+    animation: fadeDown 0.5s ease forwards;
+  }
+  
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Improved text gradient utilities */
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+  
+  /* Perspective and transform utilities */
+  .perspective-500 {
+    perspective: 500px;
+  }
+  
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  
+  /* Disable selection on UI elements */
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Optimize tap targets for mobile */
+  button, a {
+    touch-action: manipulation;
+  }
+  
+  /* Add responsive gap utilities */
+  .gap-responsive {
+    @apply gap-4 md:gap-6 lg:gap-8;
+  }
+  
+  /* Add custom blend modes */
+  .blend-overlay {
+    @apply mix-blend-overlay;
+  }
+  
+  .blend-soft-light {
+    @apply mix-blend-soft-light;
+  }
+  
+  /* Enhanced focus states for accessibility */
+  .focus-visible-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+  
+  /* Content section utilities */
+  .content-wrapper {
+    @apply container mx-auto px-4 py-16 md:py-24;
+  }
+  
+  .section-heading {
+    @apply text-3xl md:text-4xl font-bold mb-6 text-center;
+  }
+  
+  .section-text {
+    @apply text-lg text-muted-foreground max-w-2xl mx-auto text-center mb-12;
   }
 }

@@ -1,21 +1,15 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import Analytics from './components/Analytics'
+import { ThemeProvider } from './components/theme-provider'
+import { Toaster } from 'sonner'
 import './globals.css'
-
-const inter = Inter({ 
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800', '900'],
-  display: 'swap',
-})
 
 export const metadata: Metadata = {
   title: 'InfYNova - Building India\'s Next AI Smartphone',
   description: 'Redefining technology, one smart move at a time. InfYNova creates AI-powered smartphones that feel alive, intuitive, and human-centric.',
   keywords: 'AI smartphone, India, technology, innovation, NovaOS, Robin Singh, InfYNova',
   authors: [{ name: 'InfYNova Team' }],
-  viewport: 'width=device-width, initial-scale=1',
-  themeColor: '#00d4ff',
+  metadataBase: new URL('https://infynova.in'),
   openGraph: {
     title: 'InfYNova - Building India\'s Next AI Smartphone',
     description: 'Redefining technology, one smart move at a time.',
@@ -40,18 +34,32 @@ export const metadata: Metadata = {
   },
 }
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#00d4ff',
+}
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <Analytics />
       </head>
-      <body className={inter.className}>
-        {children}
+      <body className="font-sans antialiased">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   )
