@@ -3,6 +3,7 @@ import Analytics from './components/Analytics'
 import { ThemeProvider } from './components/theme-provider'
 import { ClarityTracking } from './components/clarity-tracking'
 import { ClarityScript } from './components/clarity-script'
+import { ClarityTest } from './components/clarity-test'
 import { Toaster } from 'sonner'
 import './globals.css'
 
@@ -62,6 +63,7 @@ export default function RootLayout({
           {children}
           <ClarityScript />
           <ClarityTracking />
+          <ClarityTest />
           <Toaster />
         </ThemeProvider>
       </body>
