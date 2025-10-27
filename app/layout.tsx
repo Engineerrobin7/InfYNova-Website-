@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Analytics from './components/Analytics'
 import { ThemeProvider } from './components/theme-provider'
+import { ClarityTracking } from './components/clarity-tracking'
+import { ClarityScript } from './components/clarity-script'
 import { Toaster } from 'sonner'
 import './globals.css'
 
@@ -58,6 +60,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <ClarityScript />
+          <ClarityTracking />
           <Toaster />
         </ThemeProvider>
       </body>

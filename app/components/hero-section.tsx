@@ -61,7 +61,7 @@ export function HeroSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6 relative z-10">
             <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tighter"
+              className="heading-xl leading-tight"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1 }}
@@ -86,7 +86,7 @@ export function HeroSection() {
             </motion.h1>
             
             <motion.div 
-              className="text-xl md:text-2xl lg:text-3xl font-light text-primary/90 mt-2"
+              className="body-lg font-light gradient-text-primary mt-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
@@ -108,12 +108,12 @@ export function HeroSection() {
             </motion.div>
             
             <motion.p 
-              className="text-lg md:text-xl text-foreground/80 max-w-md mt-4"
+              className="body-md text-foreground/70 max-w-lg mt-6 leading-relaxed"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.3, duration: 0.8 }}
             >
-              The design-forward, AI-powered performance phone that's redefining what a smartphone can be. Experience the revolution.
+              The design-forward, AI-powered performance phone that's redefining what a smartphone can be. Experience the revolution with cutting-edge technology that adapts to your life.
             </motion.p>
             
             <motion.div 
