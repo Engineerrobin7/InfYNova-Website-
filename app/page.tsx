@@ -7,7 +7,7 @@ import { FeaturesSection } from "./components/features-section";
 import { SpecsSection } from "./components/specs-section";
 import { DesignSection } from "./components/design-section";
 import { CTASection } from "./components/cta-section";
-import { Footer } from "./components/footer";
+import { Footer } from "./components/Footer";
 import { lazy, Suspense } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { InteractiveFeatures } from "./components/interactive-features";
