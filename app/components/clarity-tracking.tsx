@@ -13,13 +13,13 @@ export function ClarityTracking() {
   useEffect(() => {
     // Track page interactions for Clarity
     const trackInteractions = () => {
-      // Track button clicks
+      // Track button clicks  
       const buttons = document.querySelectorAll('button, [role="button"]');
       buttons.forEach(button => {
         button.addEventListener('click', (e) => {
           const target = e.target as HTMLElement;
           const buttonText = target.textContent || target.getAttribute('aria-label') || 'Unknown Button';
-          
+
           if (window.clarity) {
             window.clarity('event', 'button_click', {
               button_text: buttonText,
@@ -34,7 +34,7 @@ export function ClarityTracking() {
       forms.forEach(form => {
         form.addEventListener('submit', (e) => {
           const formId = form.id || form.className || 'unknown_form';
-          
+
           if (window.clarity) {
             window.clarity('event', 'form_submit', {
               form_id: formId,
@@ -48,10 +48,10 @@ export function ClarityTracking() {
       let maxScrollDepth = 0;
       const trackScrollDepth = () => {
         const scrollDepth = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
-        
+
         if (scrollDepth > maxScrollDepth) {
           maxScrollDepth = scrollDepth;
-          
+
           // Track milestone scroll depths
           if ([25, 50, 75, 90].includes(scrollDepth) && window.clarity) {
             window.clarity('event', 'scroll_depth', {

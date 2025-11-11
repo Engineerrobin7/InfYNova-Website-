@@ -54,9 +54,4 @@ export function ClarityScript() {
   );
 }
 
-// Extend window type for TypeScript
-declare global {
-  interface Window {
-    clarity?: any;
-  }
-}
+// Window type is declared in clarity-tracking.tsx

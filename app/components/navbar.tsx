@@ -2,18 +2,23 @@
 
 import { Button } from "./ui/button";
 import { ThemeToggle } from "./theme-toggle";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight, LogIn } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { UserProfile } from "./user-profile";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
+import { AuthModal } from "./auth/AuthModal";
+import { UserMenu } from "./auth/UserMenu";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authView, setAuthView] = useState<'signin' | 'signup'>('signin');
   const pathname = usePathname();
   const isHomePage = pathname === "/";
   const [isScrolled, setIsScrolled] = useState(false);
+  const { user, loading } = useAuth();
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -77,8 +82,37 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2 md:gap-4">
-          <UserProfile />
           <ThemeToggle />
+          
+          {!loading && (
+            <>
+              {user ? (
+                <UserMenu />
+              ) : (
+                <div className="hidden md:flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      setAuthView('signin');
+                      setIsAuthModalOpen(true);
+                    }}
+                  >
+                    <LogIn className="w-4 h-4 mr-2" />
+                    Sign In
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setAuthView('signup');
+                      setIsAuthModalOpen(true);
+                    }}
+                  >
+                    Sign Up
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
+          
           <div className="hidden md:block">
             <Button onClick={handleJoinMovement} className="group" aria-label="Join the Movement">
               Join the Movement
@@ -139,6 +173,32 @@ export function Navbar() {
               >
                 Contact Us
               </Link>
+              {!loading && !user && (
+                <>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setAuthView('signin');
+                      setIsAuthModalOpen(true);
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full"
+                  >
+                    <LogIn className="w-4 h-4 mr-2" />
+                    Sign In
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setAuthView('signup');
+                      setIsAuthModalOpen(true);
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full"
+                  >
+                    Sign Up
+                  </Button>
+                </>
+              )}
               <Button onClick={handleJoinMovement} className="w-full mt-2 group">
                 Join the Movement 
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -147,6 +207,12 @@ export function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        defaultView={authView}
+      />
     </header>
   );
 }

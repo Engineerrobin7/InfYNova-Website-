@@ -19,6 +19,8 @@
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
+    "firebase": "^12.5.0",
+    "firebase-admin": "^13.6.0",
     "formik": "^2.4.6",
     "framer-motion": "^10.18.0",
     "gsap": "^3.13.0",

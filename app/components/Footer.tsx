@@ -23,11 +23,34 @@ export function Footer() {
     setIsSubmitting(true);
     
     try {
-      // In a real implementation, this would be an API call to your backend
-      console.log("Newsletter subscription:", email);
+      // Import Firebase functions
+      const { db } = await import('@/lib/firebase/config');
+      const { collection, addDoc, serverTimestamp, query, where, getDocs } = await import('firebase/firestore');
       
-      // Simulating API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      if (!db) {
+        throw new Error('Database not configured');
+      }
+
+      // Check if email already exists
+      const subscribersRef = collection(db, 'newsletter_subscribers');
+      const q = query(subscribersRef, where('email', '==', email.toLowerCase()));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        toast.info("Already subscribed!", {
+          description: "This email is already on our list.",
+        });
+        setEmail("");
+        return;
+      }
+
+      // Add new subscriber to Firestore
+      await addDoc(subscribersRef, {
+        email: email.toLowerCase(),
+        subscribedAt: serverTimestamp(),
+        status: 'active',
+        source: 'footer'
+      });
       
       toast.success("Thank you for subscribing!", {
         description: "You'll be the first to know about Infynova updates.",
@@ -37,7 +60,7 @@ export function Footer() {
     } catch (error: any) {
       console.error("Newsletter subscription error:", error);
       toast.error("Subscription failed", {
-        description: "Please try again later.",
+        description: error.message || "Please try again later.",
       });
     } finally {
       setIsSubmitting(false);
@@ -128,19 +151,19 @@ export function Footer() {
             <div className="space-y-2 mb-6">
               <div className="flex items-center gap-2 text-foreground/60">
                 <Mail className="h-4 w-4" /> 
-                <a href="mailto:contact@infynova.tech" className="hover:text-primary transition-colors">
-                  contact@infynova.tech
+                <a href="mailto:infynovaindia@gmail.com" className="hover:text-primary transition-colors">
+                  infynovaindia@gmail.com
                 </a>
               </div>
               <div className="flex items-center gap-2 text-foreground/60">
                 <Phone className="h-4 w-4" /> 
-                <a href="tel:+18005556789" className="hover:text-primary transition-colors">
-                  +1 (800) 555-6789
+                <a href="tel:+919896583808" className="hover:text-primary transition-colors">
+                  +91 9896583808
                 </a>
               </div>
               <div className="flex items-start gap-2 text-foreground/60">
                 <MapPin className="h-4 w-4 mt-1" /> 
-                <span>123 Innovation Drive<br />San Francisco, CA 94105</span>
+                <span>India</span>
               </div>
             </div>
           </div>
