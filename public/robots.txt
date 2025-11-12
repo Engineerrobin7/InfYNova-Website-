@@ -1,0 +1,10 @@
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Disallow admin or private pages (if any)
+Disallow: /api/
+Disallow: /dashboard/
+
+# Sitemap location
+Sitemap: https://infynova.in/sitemap.xml

@@ -45,6 +45,10 @@ export default function ContactPage() {
         status: 'new',
         read: false
       });
+
+      // Track contact form submission
+      const { trackContactFormSubmission } = await import('@/lib/analytics');
+      trackContactFormSubmission(formData.subject);
       
       toast.success("Message sent successfully!", {
         description: "We'll get back to you within 24 hours."

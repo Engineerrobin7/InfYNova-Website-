@@ -51,6 +51,10 @@ export function Footer() {
         status: 'active',
         source: 'footer'
       });
+
+      // Track newsletter subscription
+      const { trackNewsletterSubscription } = await import('@/lib/analytics');
+      trackNewsletterSubscription(email);
       
       toast.success("Thank you for subscribing!", {
         description: "You'll be the first to know about Infynova updates.",

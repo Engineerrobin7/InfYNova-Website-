@@ -10,6 +10,7 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from './config';
+import { trackSignUp, trackSignIn } from '../analytics';
 
 export interface UserData {
   uid: string;
@@ -53,6 +54,9 @@ export const signUpWithEmail = async (
       lastLogin: serverTimestamp(),
     });
 
+    // Track sign-up in analytics
+    trackSignUp('email');
+
     return { user, success: true };
   } catch (error: any) {
     throw new Error(error.message);
@@ -75,6 +79,9 @@ export const signInWithEmail = async (email: string, password: string) => {
       { lastLogin: serverTimestamp() },
       { merge: true }
     );
+
+    // Track sign-in in analytics
+    trackSignIn('email');
 
     return { user, success: true };
   } catch (error: any) {
@@ -107,6 +114,9 @@ export const signInWithGoogle = async () => {
         emailVerified: user.emailVerified,
         lastLogin: serverTimestamp(),
       });
+      
+      // Track sign-up for new user
+      trackSignUp('google');
     } else {
       // Update last login
       await setDoc(
@@ -114,6 +124,9 @@ export const signInWithGoogle = async () => {
         { lastLogin: serverTimestamp() },
         { merge: true }
       );
+      
+      // Track sign-in for existing user
+      trackSignIn('google');
     }
 
     return { user, success: true };
