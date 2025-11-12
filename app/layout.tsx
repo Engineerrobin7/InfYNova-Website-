@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   keywords: 'AI smartphone, India, technology, innovation, NovaOS, Robin Singh, InfYNova',
   authors: [{ name: 'InfYNova Team' }],
   metadataBase: new URL('https://infynova.in'),
+  verification: {
+    google: 'your-google-verification-code-here', // Add when you get it from Google Search Console
+    other: {
+      'msvalidate.01': '0AE63B129CBCB6A872E72B4A8F1E9596',
+    },
+  },
   openGraph: {
     title: 'InfYNova - Building India\'s Next AI Smartphone',
     description: 'Redefining technology, one smart move at a time.',
