@@ -75,7 +75,7 @@ export const SignUpForm = ({ onSuccess, onSwitchToSignIn }: SignUpFormProps) => 
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="w-full max-w-md mx-auto p-6 bg-card rounded-2xl shadow-xl border border-border max-h-[90vh] overflow-y-auto"
+      className="w-full max-w-md mx-auto p-6 bg-card rounded-2xl shadow-2xl border border-border"
     >
       <h2 className="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
         Create Account
