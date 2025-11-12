@@ -8,25 +8,58 @@ import { Calendar, User } from "lucide-react";
 export default function BlogPage() {
   const posts = [
     {
+      title: "InfYNova: Redefining India's Smartphone Industry",
+      excerpt: "Discover how InfYNova is building India's first AI-powered smartphone and why it matters for the future of mobile technology.",
+      author: "Robin Singh",
+      date: "Nov 12, 2024",
+      image: "🚀",
+      slug: "introducing-infynova",
+      category: "Company News"
+    },
+    {
+      title: "NovaOS: The AI-First Operating System",
+      excerpt: "Deep dive into NovaOS - the operating system that thinks with you. Learn about the AI features, performance optimizations, and what makes it special.",
+      author: "InfYNova Team",
+      date: "Nov 12, 2024",
+      image: "🧠",
+      slug: "novaos-explained",
+      category: "Technology"
+    },
+    {
+      title: "Why India Needs InfYNova",
+      excerpt: "India is the world's second-largest smartphone market, but we're still dependent on foreign brands. It's time to change that.",
+      author: "Robin Singh",
+      date: "Nov 12, 2024",
+      image: "🇮🇳",
+      slug: "why-india-needs-infynova",
+      category: "Opinion"
+    },
+    {
       title: "The Future of AI in Smartphones",
-      excerpt: "Exploring how artificial intelligence is revolutionizing mobile technology...",
+      excerpt: "Exploring how artificial intelligence is revolutionizing mobile technology and what it means for the next generation of devices.",
       author: "InfYNova Team",
       date: "Nov 10, 2024",
-      image: "🤖"
+      image: "🤖",
+      slug: "ai-future",
+      category: "Technology"
     },
     {
-      title: "NovaOS: Built for Performance",
-      excerpt: "Deep dive into the architecture and optimization techniques behind NovaOS...",
+      title: "InfYNova vs iPhone vs Samsung: The Real Comparison",
+      excerpt: "An honest comparison of features, performance, and value. See how InfYNova stacks up against the competition.",
       author: "Tech Team",
-      date: "Nov 5, 2024",
-      image: "⚡"
+      date: "Nov 8, 2024",
+      image: "⚔️",
+      slug: "comparison",
+      category: "Reviews"
     },
     {
-      title: "Sustainable Technology: Our Commitment",
-      excerpt: "How we're building eco-friendly smartphones for a better tomorrow...",
-      author: "InfYNova Team",
-      date: "Oct 28, 2024",
-      image: "🌱"
+      title: "Building India's Tech Future",
+      excerpt: "How we're creating jobs, developing AI expertise, and inspiring the next generation of Indian tech entrepreneurs.",
+      author: "Robin Singh",
+      date: "Nov 5, 2024",
+      image: "🌟",
+      slug: "tech-future",
+      category: "Company News"
     },
   ];
 
@@ -63,8 +96,15 @@ export default function BlogPage() {
                   className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition"
                 >
                   <div className="p-8">
-                    <div className="text-6xl mb-4">{post.image}</div>
-                    <h2 className="text-2xl font-bold mb-3">{post.title}</h2>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="text-4xl">{post.image}</div>
+                      <span className="px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full">
+                        {post.category}
+                      </span>
+                    </div>
+                    <h2 className="text-2xl font-bold mb-3 hover:text-primary transition-colors">
+                      {post.title}
+                    </h2>
                     <p className="text-muted-foreground mb-4">{post.excerpt}</p>
                     <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
                       <span className="flex items-center gap-1">

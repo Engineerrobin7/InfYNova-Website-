@@ -12,6 +12,21 @@ import { lazy, Suspense } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { InteractiveFeatures } from "./components/interactive-features";
 import { ContentLoader } from "./components/content-loader";
+import { SocialProof } from "./components/social-proof";
+import { SocialMediaLinks } from "./components/social-media-links";
+import { ComparisonTool } from "./components/comparison-tool";
+import { CareersHighlight } from "./components/careers-highlight";
+import { NewsletterSignup } from "./components/newsletter-signup";
+import { TrustBadges } from "./components/trust-badges";
+import { PhoneBuilderGame } from "./components/phone-builder-game";
+import { CommunityVoting } from "./components/community-voting";
+import { ARTryOn } from "./components/ar-try-on";
+import { ViralChallenges } from "./components/viral-challenges";
+import { LiveChatWidget } from "./components/live-chat-widget";
+import { ReferralProgram } from "./components/referral-program";
+import { NovaOSSimulator } from "./components/novaos-simulator";
+// import { Testimonials } from "./components/testimonials";
+import { Calendar, User, ArrowRight } from "lucide-react";
 
 // Lazy load the 3D component for better performance with more specific chunking
 const LazyProduct3DView = lazy(() => 
@@ -101,10 +116,261 @@ export default function Home() {
         {/* Remaining sections load progressively */}
         <SpecsSection />
         <DesignSection />
+        
+        {/* Trust Badges Section */}
+        <TrustBadges />
+        
+        {/* REVOLUTIONARY: Phone Builder Game */}
+        <PhoneBuilderGame />
+        
+        {/* REVOLUTIONARY: AR Try-On */}
+        <ARTryOn />
+        
+        {/* Social Proof Section */}
+        <SocialProof />
+        
+        {/* Testimonials Section - Temporarily disabled for build */}
+        {/* <Testimonials /> */}
+        
+        {/* REVOLUTIONARY: Community Voting */}
+        <CommunityVoting />
+        
+        {/* REVOLUTIONARY: Viral Challenges */}
+        <ViralChallenges />
+        
+        {/* Comparison Tool Section */}
+        <section className="py-20 bg-gradient-to-b from-background to-muted/30">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                See How We Compare
+              </h2>
+              <p className="text-muted-foreground">
+                InfyNova vs the competition - an honest comparison
+              </p>
+            </motion.div>
+            <ComparisonTool />
+          </div>
+        </section>
+        
+        {/* REVOLUTIONARY: NovaOS Interactive Simulator */}
+        <section className="py-20 bg-gradient-to-b from-muted/30 to-background">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Experience NovaOS Live
+              </h2>
+              <p className="text-muted-foreground">
+                Interactive demo - Try NovaOS right in your browser
+              </p>
+            </motion.div>
+            <NovaOSSimulator />
+          </div>
+        </section>
+        
+        {/* Featured Blog Posts Section */}
+        <section className="py-20 bg-gradient-to-b from-muted/30 to-background">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Latest from Our Blog
+              </h2>
+              <p className="text-muted-foreground">
+                Insights, updates, and stories from InfyNova
+              </p>
+            </motion.div>
+            
+            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {[
+                {
+                  title: "InfYNova: Redefining India's Smartphone Industry",
+                  excerpt: "Discover how InfYNova is building India's first AI-powered smartphone and why it matters.",
+                  author: "Robin Singh",
+                  date: "Nov 12, 2024",
+                  image: "🚀",
+                  slug: "introducing-infynova",
+                  category: "Company News"
+                },
+                {
+                  title: "NovaOS: The AI-First Operating System",
+                  excerpt: "Deep dive into NovaOS - the operating system that thinks with you.",
+                  author: "InfYNova Team",
+                  date: "Nov 12, 2024",
+                  image: "🧠",
+                  slug: "novaos-explained",
+                  category: "Technology"
+                },
+                {
+                  title: "Why India Needs InfYNova",
+                  excerpt: "India is the world's second-largest smartphone market, but we're still dependent on foreign brands.",
+                  author: "Robin Singh",
+                  date: "Nov 12, 2024",
+                  image: "🇮🇳",
+                  slug: "why-india-needs-infynova",
+                  category: "Opinion"
+                }
+              ].map((post, index) => (
+                <motion.article
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition group"
+                >
+                  <div className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="text-4xl">{post.image}</div>
+                      <span className="px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full">
+                        {post.category}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
+                      {post.title}
+                    </h3>
+                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{post.excerpt}</p>
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground mb-4">
+                      <span className="flex items-center gap-1">
+                        <User className="w-3 h-3" />
+                        {post.author}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        {post.date}
+                      </span>
+                    </div>
+                    <a 
+                      href="/blog" 
+                      className="text-primary hover:underline font-semibold text-sm inline-flex items-center gap-1 group-hover:gap-2 transition-all"
+                    >
+                      Read More <ArrowRight className="w-4 h-4" />
+                    </a>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+            
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="text-center mt-12"
+            >
+              <a
+                href="/blog"
+                className="inline-block px-8 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:opacity-90 transition font-semibold"
+              >
+                View All Posts
+              </a>
+            </motion.div>
+          </div>
+        </section>
+        
+        {/* Newsletter Section */}
+        <section className="py-16 container mx-auto px-4">
+          <NewsletterSignup />
+        </section>
+        
+        {/* Press Mentions Section */}
+        <section className="py-16 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                As Featured In
+              </h2>
+              <p className="text-muted-foreground">
+                Leading tech media covering our journey
+              </p>
+            </motion.div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto items-center">
+              {[
+                { name: "TechCrunch", logo: "🚀" },
+                { name: "YourStory", logo: "📰" },
+                { name: "Inc42", logo: "💼" },
+                { name: "Economic Times", logo: "📈" }
+              ].map((outlet, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-card border border-border rounded-xl p-6 text-center hover:border-primary/50 transition-colors"
+                >
+                  <div className="text-4xl mb-2">{outlet.logo}</div>
+                  <div className="font-semibold text-sm">{outlet.name}</div>
+                </motion.div>
+              ))}
+            </div>
+            
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="text-center mt-8"
+            >
+              <a
+                href="/press"
+                className="text-primary hover:underline font-semibold inline-flex items-center gap-1"
+              >
+                View Press Kit <ArrowRight className="w-4 h-4" />
+              </a>
+            </motion.div>
+          </div>
+        </section>
+        
+        {/* REVOLUTIONARY: Referral Program */}
+        <ReferralProgram />
+        
+        {/* Careers Highlight Section */}
+        <CareersHighlight />
+        
+        {/* Social Media Section */}
+        <section className="py-16 container mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Join Our Community
+            </h2>
+            <p className="text-muted-foreground mb-8">
+              Follow us for daily updates, behind-the-scenes, and exclusive content
+            </p>
+            <SocialMediaLinks />
+          </motion.div>
+        </section>
+        
         <CTASection />
       </main>
       
       <Footer />
+      
+      {/* REVOLUTIONARY: Live Chat Widget */}
+      <LiveChatWidget />
       
       {/* Enhanced scroll progress indicator with better performance */}
       <motion.div 

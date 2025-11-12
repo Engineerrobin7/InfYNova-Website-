@@ -76,9 +76,10 @@ export function Navbar() {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6 lg:gap-8">
           <Link href="/" className={`text-foreground/80 hover:text-primary transition-colors ${pathname === '/' ? 'text-primary' : ''}`}>Home</Link>
-          <Link href="/about" className={`text-foreground/80 hover:text-primary transition-colors ${pathname === '/about' ? 'text-primary' : ''}`}>About Us</Link>
+          <Link href="/about" className={`text-foreground/80 hover:text-primary transition-colors ${pathname === '/about' ? 'text-primary' : ''}`}>About</Link>
+          <Link href="/features" className={`text-foreground/80 hover:text-primary transition-colors ${pathname === '/features' ? 'text-primary' : ''}`}>Features</Link>
           <Link href="/novaos" className={`text-foreground/80 hover:text-primary transition-colors ${pathname === '/novaos' ? 'text-primary' : ''}`}>NovaOS</Link>
-          <Link href="/contact" className={`text-foreground/80 hover:text-primary transition-colors ${pathname === '/contact' ? 'text-primary' : ''}`}>Contact Us</Link>
+          <Link href="/blog" className={`text-foreground/80 hover:text-primary transition-colors ${pathname === '/blog' ? 'text-primary' : ''}`}>Blog</Link>
         </nav>
 
         <div className="flex items-center gap-2 md:gap-4">
