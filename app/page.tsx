@@ -26,6 +26,10 @@ import { LiveChatWidget } from "./components/live-chat-widget";
 import { ReferralProgram } from "./components/referral-program";
 import { NovaOSSimulator } from "./components/novaos-simulator";
 // import { Testimonials } from "./components/testimonials";
+import { ViralPopup } from "./components/viral-popup";
+import { AffiliateProgram } from "./components/affiliate-program";
+import { SEOBoost } from "./components/seo-boost";
+import { AutoShareButtons } from "./components/auto-share-buttons";
 import { Calendar, User, ArrowRight } from "lucide-react";
 
 // Lazy load the 3D component for better performance with more specific chunking
@@ -66,6 +70,7 @@ export default function Home() {
 
   return (
     <>
+      <SEOBoost />
       <Navbar />
       <main id="main-content" ref={containerRef} className="min-h-screen overflow-x-hidden">
         {/* Critical above-the-fold content loads first */}
@@ -343,6 +348,9 @@ export default function Home() {
         {/* REVOLUTIONARY: Referral Program */}
         <ReferralProgram />
         
+        {/* MONETIZATION: Affiliate Program */}
+        <AffiliateProgram />
+        
         {/* Careers Highlight Section */}
         <CareersHighlight />
         
@@ -368,6 +376,12 @@ export default function Home() {
       </main>
       
       <Footer />
+      
+      {/* MONETIZATION: Viral Popup */}
+      <ViralPopup />
+      
+      {/* MONETIZATION: Auto Share Buttons */}
+      <AutoShareButtons />
       
       {/* REVOLUTIONARY: Live Chat Widget */}
       <LiveChatWidget />
