@@ -1,11 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Trophy, Flame, Gift, Share2, Camera, Zap } from "lucide-react";
 
 export function ViralChallenges() {
   const [activeChallenge, setActiveChallenge] = useState(0);
+
+  // Generate static positions to avoid hydration mismatch
+  const floatingElements = useMemo(() => {
+    return [...Array(30)].map((_, i) => ({
+      left: (i * 13.7) % 100,
+      top: (i * 17.3) % 100,
+      duration: 3 + (i % 3),
+      delay: (i % 5) * 0.4,
+      emoji: ["🔥", "⚡", "🎉", "🏆", "✨"][i % 5]
+    }));
+  }, []);
 
   const challenges = [
     {
@@ -58,25 +69,25 @@ export function ViralChallenges() {
     <section className="py-20 bg-gradient-to-b from-background via-accent/5 to-background relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0">
-        {[...Array(30)].map((_, i) => (
+        {floatingElements.map((element, i) => (
           <motion.div
             key={i}
             className="absolute"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              left: `${element.left}%`,
+              top: `${element.top}%`,
             }}
             animate={{
               y: [0, -30, 0],
               opacity: [0.2, 0.5, 0.2],
             }}
             transition={{
-              duration: 3 + Math.random() * 2,
+              duration: element.duration,
               repeat: Infinity,
-              delay: Math.random() * 2,
+              delay: element.delay,
             }}
           >
-            {["🔥", "⚡", "🎉", "🏆", "✨"][Math.floor(Math.random() * 5)]}
+            {element.emoji}
           </motion.div>
         ))}
       </div>
