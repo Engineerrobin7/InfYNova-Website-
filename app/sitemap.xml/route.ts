@@ -27,6 +27,7 @@ export async function GET() {
     { url: '/press', priority: '0.8', changefreq: 'weekly' },
     { url: '/contact', priority: '0.7', changefreq: 'monthly' },
     { url: '/community', priority: '0.7', changefreq: 'weekly' },
+    { url: '/affiliate', priority: '0.9', changefreq: 'weekly' },
     
     // Support pages
     { url: '/help-center', priority: '0.7', changefreq: 'weekly' },

@@ -80,6 +80,7 @@ export function Navbar() {
           <Link href="/features" className={`text-foreground/80 hover:text-primary transition-colors ${pathname === '/features' ? 'text-primary' : ''}`}>Features</Link>
           <Link href="/novaos" className={`text-foreground/80 hover:text-primary transition-colors ${pathname === '/novaos' ? 'text-primary' : ''}`}>NovaOS</Link>
           <Link href="/blog" className={`text-foreground/80 hover:text-primary transition-colors ${pathname === '/blog' ? 'text-primary' : ''}`}>Blog</Link>
+          <Link href="/affiliate" className={`text-foreground/80 hover:text-primary transition-colors ${pathname === '/affiliate' ? 'text-primary' : ''}`}>Affiliate</Link>
         </nav>
 
         <div className="flex items-center gap-2 md:gap-4">
@@ -173,6 +174,13 @@ export function Navbar() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Contact Us
+              </Link>
+              <Link
+                href="/affiliate"
+                className={`text-foreground/80 hover:text-primary transition-colors py-2 ${pathname === '/affiliate' ? 'text-primary' : ''}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Affiliate
               </Link>
               {!loading && !user && (
                 <>
