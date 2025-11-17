@@ -4,6 +4,7 @@ import { Navbar } from "../components/navbar";
 import { Footer } from "../components/Footer";
 import { motion } from "framer-motion";
 import { Target, Users, Lightbulb, Award, Heart, Zap } from "lucide-react";
+import { ProductHuntBadge } from "../components/product-hunt-badge";
 
 export default function AboutPage() {
   return (
@@ -24,6 +25,23 @@ export default function AboutPage() {
               <p className="text-xl text-muted-foreground mb-8">
                 Redefining technology, one smart move at a time
               </p>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Product Hunt Badge */}
+        <section className="py-8 bg-muted/20">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <p className="text-sm text-muted-foreground mb-4">
+                🏆 Featured on Product Hunt
+              </p>
+              <ProductHuntBadge />
             </motion.div>
           </div>
         </section>

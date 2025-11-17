@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
+import { ProductHuntBadge } from "./product-hunt-badge";
 
 export function Footer() {
   const [email, setEmail] = useState("");
@@ -75,6 +76,14 @@ export function Footer() {
     <footer className="bg-background border-t border-border py-12" aria-labelledby="footer-heading">
       <div className="container mx-auto px-4">
         <h2 id="footer-heading" className="sr-only">Footer</h2>
+
+        {/* Product Hunt Badge */}
+        <div className="text-center mb-8">
+          <p className="text-sm text-muted-foreground mb-4">
+            🏆 Featured on Product Hunt
+          </p>
+          <ProductHuntBadge />
+        </div>
 
         {/* Newsletter subscription */}
         <div className="max-w-3xl mx-auto mb-12 p-6 rounded-xl bg-background/30 backdrop-blur-sm border border-border">

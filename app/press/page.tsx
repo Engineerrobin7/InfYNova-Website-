@@ -5,6 +5,7 @@ import { Footer } from "../components/Footer";
 import { motion } from "framer-motion";
 import { Download, Mail, FileText, Image as ImageIcon, Video } from "lucide-react";
 import { Button } from "../components/ui/button";
+import { ProductHuntBadge } from "../components/product-hunt-badge";
 
 export default function PressPage() {
   const pressReleases = [
@@ -51,6 +52,23 @@ export default function PressPage() {
               <p className="text-xl text-muted-foreground mb-8">
                 Latest news, press releases, and media resources
               </p>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Product Hunt Badge */}
+        <section className="py-8 bg-muted/20">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <p className="text-sm text-muted-foreground mb-4">
+                🏆 Featured on Product Hunt
+              </p>
+              <ProductHuntBadge />
             </motion.div>
           </div>
         </section>

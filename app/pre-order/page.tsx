@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Navbar } from "../components/navbar";
 import { Footer } from "../components/Footer";
 import { Check, Sparkles, Gift, Truck, Shield } from "lucide-react";
+import { ProductHuntBadge } from "../components/product-hunt-badge";
 
 export default function PreOrderPage() {
   const [selectedModel, setSelectedModel] = useState("pro");
@@ -85,6 +86,18 @@ export default function PreOrderPage() {
               <Gift className="w-5 h-5 text-primary" />
               <span className="font-semibold">Early Bird Offer: Save ₹5,000 + Free NovaOS Premium</span>
             </div>
+          </motion.div>
+
+          {/* Product Hunt Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-8"
+          >
+            <p className="text-sm text-muted-foreground mb-4">
+              🏆 Featured on Product Hunt
+            </p>
+            <ProductHuntBadge />
           </motion.div>
 
           {/* Benefits */}
