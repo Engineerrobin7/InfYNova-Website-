@@ -1,15 +1,15 @@
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  const robotsTxt = `# https://www.robotstxt.org/robotstxt.html
+  const robotsTxt = `# InfyNova - AI Smartphone Website
+# https://www.robotstxt.org/robotstxt.html
+
+# Allow all search engines
 User-agent: *
 Allow: /
 
-# Sitemaps
-Sitemap: https://infynova.in/sitemap.xml
-
-# Disallow admin and API routes
-Disallow: /api/
+# Crawl delay (be nice to servers)
+Crawl-dela/api/
 Disallow: /dashboard/
 Disallow: /_next/
 `;
