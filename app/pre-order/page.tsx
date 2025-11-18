@@ -59,7 +59,9 @@ export default function PreOrderPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Handle pre-order submission
-    console.log("Pre-order submitted:", formData);
+    if (process.env.NODE_ENV === 'development') {
+      console.log("Pre-order submitted:", formData);
+    }
     alert("Thank you for your pre-order! We'll contact you soon.");
   };
 

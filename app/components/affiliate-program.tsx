@@ -16,7 +16,9 @@ export function AffiliateProgram() {
     setAffiliateCode(code);
     
     // TODO: Save to database
-    console.log("Affiliate signup:", email, code);
+    if (process.env.NODE_ENV === 'development') {
+      console.log("Affiliate signup:", email, code);
+    }
   };
 
   const copyCode = () => {

@@ -50,7 +50,9 @@ export function CTASection() {
     
     try {
       // In a real implementation, this would be an API call to your backend
-      console.log("Submitting email for pre-order notification:", email);
+      if (process.env.NODE_ENV === 'development') {
+        console.log("Submitting email for pre-order notification:", email);
+      }
       
       // Simulating API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));

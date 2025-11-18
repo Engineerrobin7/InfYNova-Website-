@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export function ProductHuntBadge() {
   return (
@@ -14,13 +15,15 @@ export function ProductHuntBadge() {
         target="_blank"
         rel="noopener noreferrer"
         className="hover:opacity-80 transition-opacity"
+        aria-label="InfYNova on Product Hunt"
       >
-        <img 
+        <Image 
           src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1039185&theme=light&t=1763393150933" 
           alt="InfYNova - A bold, clean, human-first smartphone built in India. | Product Hunt" 
-          style={{ width: '250px', height: '54px' }} 
-          width="250" 
-          height="54" 
+          width={250} 
+          height={54}
+          priority={false}
+          loading="lazy"
         />
       </a>
     </motion.div>

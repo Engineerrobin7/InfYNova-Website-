@@ -27,7 +27,9 @@ export function ViralPopup() {
     localStorage.setItem('infynova_popup_seen', 'true');
     
     // TODO: Save email to database
-    console.log('Email submitted:', email);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Email submitted:', email);
+    }
     
     setTimeout(() => {
       setShow(false);
