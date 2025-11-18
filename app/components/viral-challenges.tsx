@@ -1,21 +1,28 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
-import { Trophy, Flame, Gift, Share2, Camera, Zap } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Trophy, Flame, Gift, Share2, Camera, Zap, X } from "lucide-react";
+import { SubmitChallengeEntry } from "./submit-challenge-entry";
 
 export function ViralChallenges() {
-  const [activeChallenge, setActiveChallenge] = useState(0);
+  const [activeChallenge, setActiveChallenge] = useState<number | null>(null);
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
 
   // Generate static positions to avoid hydration mismatch
   const floatingElements = useMemo(() => {
-    return [...Array(30)].map((_, i) => ({
-      left: (i * 13.7) % 100,
-      top: (i * 17.3) % 100,
-      duration: 3 + (i % 3),
-      delay: (i % 5) * 0.4,
-      emoji: ["🔥", "⚡", "🎉", "🏆", "✨"][i % 5]
-    }));
+    const emojis = ["🔥", "⚡", "🎉", "🏆", "✨"];
+    return [...Array(30)].map((_, i) => {
+      // Better distribution using golden ratio
+      const goldenRatio = 1.618033988749895;
+      return {
+        left: ((i * goldenRatio * 100) % 100),
+        top: ((i * goldenRatio * 73) % 100),
+        duration: 3 + (i % 3),
+        delay: (i % 5) * 0.4,
+        emoji: emojis[i % emojis.length]
+      };
+    });
   }, []);
 
   const challenges = [
@@ -68,23 +75,24 @@ export function ViralChallenges() {
   return (
     <section className="py-20 bg-gradient-to-b from-background via-accent/5 to-background relative overflow-hidden">
       {/* Animated Background */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 pointer-events-none">
         {floatingElements.map((element, i) => (
           <motion.div
-            key={i}
-            className="absolute"
+            key={`float-${i}`}
+            className="absolute text-2xl select-none"
             style={{
               left: `${element.left}%`,
               top: `${element.top}%`,
             }}
             animate={{
               y: [0, -30, 0],
-              opacity: [0.2, 0.5, 0.2],
+              opacity: [0.3, 0.6, 0.3],
             }}
             transition={{
               duration: element.duration,
               repeat: Infinity,
               delay: element.delay,
+              ease: "easeInOut",
             }}
           >
             {element.emoji}
@@ -177,6 +185,11 @@ export function ViralChallenges() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveChallenge(challenge.id);
+                  setShowSubmitModal(true);
+                }}
                 className="w-full mt-4 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:opacity-90 transition font-semibold flex items-center justify-center gap-2"
               >
                 <Camera className="w-5 h-5" />
@@ -249,6 +262,40 @@ export function ViralChallenges() {
           </button>
         </motion.div>
       </div>
+
+      {/* Submit Entry Modal */}
+      <AnimatePresence>
+        {showSubmitModal && activeChallenge && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowSubmitModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-card border border-border rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowSubmitModal(false)}
+                className="absolute top-4 right-4 p-2 hover:bg-muted rounded-full transition"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              
+              <SubmitChallengeEntry
+                challengeId={activeChallenge}
+                hashtag={challenges.find(c => c.id === activeChallenge)?.title || ''}
+                onClose={() => setShowSubmitModal(false)}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
