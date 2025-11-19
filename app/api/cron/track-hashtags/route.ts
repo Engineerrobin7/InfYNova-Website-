@@ -4,8 +4,10 @@ import { getFirestore } from 'firebase-admin/firestore';
 import { trackInstagramHashtags } from '@/app/lib/instagram-api';
 import { trackTwitterHashtags, getTweetUrl, calculateTwitterEngagement } from '@/app/lib/twitter-api';
 
-// Initialize Firebase Admin
-if (!getApps().length) {
+// Initialize Firebase Admin only if credentials are available
+let db: any = null;
+
+if (!getApps().length && process.env.FIREBASE_CLIENT_EMAIL && process.env.FIREBASE_PRIVATE_KEY) {
   try {
     initializeApp({
       credential: cert({
@@ -14,12 +16,11 @@ if (!getApps().length) {
         privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
       }),
     });
+    db = getFirestore();
   } catch (error) {
     console.error('Firebase admin initialization error:', error);
   }
 }
-
-const db = getFirestore();
 
 // Hashtags to track
 const HASHTAGS = [
@@ -31,6 +32,14 @@ const HASHTAGS = [
 
 export async function GET(request: NextRequest) {
   try {
+    // Check if Firebase is configured
+    if (!db) {
+      return NextResponse.json(
+        { success: false, error: 'Database not configured' },
+        { status: 503 }
+      );
+    }
+
     // Verify cron secret for security
     const authHeader = request.headers.get('authorization');
     const cronSecret = process.env.CRON_SECRET;

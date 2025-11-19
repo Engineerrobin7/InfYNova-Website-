@@ -2,8 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 
-// Initialize Firebase Admin
-if (!getApps().length) {
+// Initialize Firebase Admin only if credentials are available
+let db: any = null;
+
+if (!getApps().length && process.env.FIREBASE_CLIENT_EMAIL && process.env.FIREBASE_PRIVATE_KEY) {
   try {
     initializeApp({
       credential: cert({
@@ -12,16 +14,23 @@ if (!getApps().length) {
         privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
       }),
     });
+    db = getFirestore();
   } catch (error) {
     console.error('Firebase admin initialization error:', error);
   }
 }
 
-const db = getFirestore();
-
 // Admin endpoint to verify and approve entries
 export async function POST(request: NextRequest) {
   try {
+    // Check if Firebase is configured
+    if (!db) {
+      return NextResponse.json(
+        { success: false, error: 'Database not configured' },
+        { status: 503 }
+      );
+    }
+
     const body = await request.json();
     const { entryId, verified, reward, likes, comments, shares } = body;
 
@@ -93,6 +102,14 @@ export async function POST(request: NextRequest) {
 // Get entry details
 export async function GET(request: NextRequest) {
   try {
+    // Check if Firebase is configured
+    if (!db) {
+      return NextResponse.json(
+        { success: false, error: 'Database not configured' },
+        { status: 503 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const entryId = searchParams.get('id');
 
