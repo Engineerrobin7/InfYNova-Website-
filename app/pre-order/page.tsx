@@ -6,6 +6,7 @@ import { Navbar } from "../components/navbar";
 import { Footer } from "../components/Footer";
 import { Check, Sparkles, Gift, Truck, Shield } from "lucide-react";
 import { ProductHuntBadge } from "../components/product-hunt-badge";
+import { toast } from "sonner";
 
 export default function PreOrderPage() {
   const [selectedModel, setSelectedModel] = useState("pro");
@@ -62,7 +63,20 @@ export default function PreOrderPage() {
     if (process.env.NODE_ENV === 'development') {
       console.log("Pre-order submitted:", formData);
     }
-    alert("Thank you for your pre-order! We'll contact you soon.");
+    
+    // Show success toast instead of alert
+    toast.success("Pre-order Submitted!", {
+      description: "Thank you! We'll contact you soon with next steps."
+    });
+    
+    // Reset form
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+      model: "pro"
+    });
   };
 
   return (
