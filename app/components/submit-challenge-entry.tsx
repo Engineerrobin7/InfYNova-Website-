@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Upload, Link as LinkIcon, Instagram, Twitter, Facebook, CheckCircle } from "lucide-react";
 import { submitEntry } from "@/app/lib/hashtag-tracker";
 import { toast } from "sonner";
+import { trackChallengeSubmission } from "@/app/lib/gtm";
 
 interface SubmitChallengeEntryProps {
   challengeId: number;
@@ -48,6 +49,14 @@ export function SubmitChallengeEntry({ challengeId, hashtag, onClose }: SubmitCh
       });
 
       setSubmitted(true);
+      
+      // Track with GTM
+      trackChallengeSubmission({
+        challengeName: hashtag,
+        platform: platform,
+        username: username,
+      });
+      
       toast.success("Entry submitted successfully!", {
         description: "We'll review your entry and notify you if you win!"
       });

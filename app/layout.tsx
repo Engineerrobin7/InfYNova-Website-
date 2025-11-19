@@ -4,7 +4,10 @@ import { ThemeProvider } from './components/theme-provider'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { Toaster } from 'sonner'
 import { SEOSchema } from './components/seo-schema'
+import { GoogleTagManager, GoogleTagManagerNoScript } from './components/google-tag-manager'
 import './globals.css'
+
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || ''
 
 export const metadata: Metadata = {
   title: {
@@ -153,9 +156,11 @@ export default function RootLayout({
       <head>
         <Analytics />
         <SEOSchema />
+        <GoogleTagManager gtmId={GTM_ID} />
         <link rel="canonical" href="https://infynova.in" />
       </head>
       <body className="font-sans antialiased" suppressHydrationWarning>
+        <GoogleTagManagerNoScript gtmId={GTM_ID} />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

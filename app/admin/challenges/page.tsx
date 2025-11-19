@@ -134,14 +134,40 @@ export default function AdminChallengesPage() {
               <h1 className="text-3xl font-bold mb-2">Challenge Entries</h1>
               <p className="text-muted-foreground">Review and verify user submissions</p>
             </div>
-            <button
-              onClick={loadEntries}
-              disabled={loading}
-              className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition disabled:opacity-50"
-            >
-              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-              Refresh
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={async () => {
+                  try {
+                    const response = await fetch('/api/admin/trigger-tracking', {
+                      method: 'POST',
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                      toast.success('Tracking triggered!', {
+                        description: `Found ${data.data.results.instagram.new + data.data.results.twitter.new} new posts`
+                      });
+                      loadEntries();
+                    } else {
+                      toast.error('Failed to trigger tracking');
+                    }
+                  } catch (error) {
+                    toast.error('Failed to trigger tracking');
+                  }
+                }}
+                className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+              >
+                <TrendingUp className="w-4 h-4" />
+                Track Now
+              </button>
+              <button
+                onClick={loadEntries}
+                disabled={loading}
+                className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition disabled:opacity-50"
+              >
+                <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+                Refresh
+              </button>
+            </div>
           </div>
         </div>
       </div>
