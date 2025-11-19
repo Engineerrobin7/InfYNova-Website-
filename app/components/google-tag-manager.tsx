@@ -2,7 +2,7 @@
 
 import Script from 'next/script';
 import { useEffect } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 interface GTMProps {
   gtmId: string;
@@ -10,7 +10,6 @@ interface GTMProps {
 
 export function GoogleTagManager({ gtmId }: GTMProps) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (pathname) {
@@ -21,7 +20,7 @@ export function GoogleTagManager({ gtmId }: GTMProps) {
         page: pathname,
       });
     }
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   if (!gtmId) {
     return null;
