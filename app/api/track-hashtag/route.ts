@@ -125,7 +125,7 @@ export async function GET(request: NextRequest) {
     query = query.limit(limitParam) as any;
 
     const snapshot = await query.get();
-    const entries = snapshot.docs.map(doc => ({
+    const entries = snapshot.docs.map((doc: any) => ({
       id: doc.id,
       ...doc.data(),
     }));
