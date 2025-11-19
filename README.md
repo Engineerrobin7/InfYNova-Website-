@@ -287,9 +287,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Website**: [https://infynova.in](https://infynova.in)
 - **Product Hunt**: [https://www.producthunt.com/products/infynova](https://www.producthunt.com/products/infynova)
-- **Instagram**: [@infynova_tech](https://instagram.com/infynova_tech)
-- **Twitter**: [@infynova_tech](https://twitter.com/infynova_tech)
-- **LinkedIn**: [InfYNova](https://linkedin.com/company/infynova-tech)
+- **Instagram**: [@infynova_tech](https://instagram.com/infynova_india)
+- **Twitter**: [@infynova_tech](https://x.com/InfYNova122857)
+- **LinkedIn**: [InfYNova](https://linkedin.com/company/infynova)
 
 ## 📞 Support
 

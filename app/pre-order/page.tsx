@@ -57,26 +57,66 @@ export default function PreOrderPage() {
     }
   };
 
+  const [submitting, setSubmitting] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle pre-order submission
-    if (process.env.NODE_ENV === 'development') {
-      console.log("Pre-order submitted:", formData);
+    setSubmitting(true);
+
+    try {
+      const response = await fetch('/api/pre-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Track pre-order with GTM
+        if (typeof window !== 'undefined' && (window as any).dataLayer) {
+          (window as any).dataLayer.push({
+            event: 'pre_order',
+            ecommerce: {
+              items: [{
+                item_name: data.data.model,
+                item_id: formData.model,
+                price: data.data.price,
+                currency: 'INR',
+                quantity: 1
+              }]
+            }
+          });
+        }
+
+        toast.success("Pre-order Submitted!", {
+          description: `Order #${data.orderNumber}. Check your email for confirmation.`,
+          duration: 5000,
+        });
+
+        // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          address: "",
+          model: "pro"
+        });
+      } else {
+        toast.error("Submission Failed", {
+          description: data.error || "Please try again later.",
+        });
+      }
+    } catch (error) {
+      console.error('Pre-order error:', error);
+      toast.error("Something went wrong", {
+        description: "Please check your connection and try again.",
+      });
+    } finally {
+      setSubmitting(false);
     }
-    
-    // Show success toast instead of alert
-    toast.success("Pre-order Submitted!", {
-      description: "Thank you! We'll contact you soon with next steps."
-    });
-    
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      address: "",
-      model: "pro"
-    });
   };
 
   return (
@@ -275,9 +315,17 @@ export default function PreOrderPage() {
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-primary to-accent text-white font-semibold py-4 rounded-lg hover:opacity-90 transition-opacity"
+                  disabled={submitting}
+                  className="w-full bg-gradient-to-r from-primary to-accent text-white font-semibold py-4 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Complete Pre-Order
+                  {submitting ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Submitting...
+                    </span>
+                  ) : (
+                    'Complete Pre-Order'
+                  )}
                 </button>
 
                 <p className="text-xs text-muted-foreground text-center">

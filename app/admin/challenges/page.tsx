@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
 import { 
   CheckCircle, 
   XCircle, 
@@ -33,10 +35,19 @@ interface Entry {
 }
 
 export default function AdminChallengesPage() {
+  const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const [entries, setEntries] = useState<Entry[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'pending' | 'verified'>('all');
   const [selectedHashtag, setSelectedHashtag] = useState<string>('all');
+
+  // Check authentication
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.push('/dashboard?redirect=/admin/challenges');
+    }
+  }, [user, authLoading, router]);
 
   const hashtags = [
     'all',
@@ -123,6 +134,23 @@ export default function AdminChallengesPage() {
     verified: entries.filter(e => e.verified).length,
     rewarded: entries.filter(e => e.rewarded).length,
   };
+
+  // Show loading while checking auth
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Redirect if not authenticated
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-background">

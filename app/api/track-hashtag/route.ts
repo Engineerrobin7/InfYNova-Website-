@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
+import { rateLimit, getClientIdentifier, RATE_LIMITS } from '@/app/lib/rate-limit';
+import { verifyCaptcha, checkHoneypot } from '@/app/lib/captcha';
 
 // Initialize Firebase Admin only if credentials are available
 let db: any = null;
@@ -23,6 +25,18 @@ if (!getApps().length && process.env.FIREBASE_CLIENT_EMAIL && process.env.FIREBA
 // Submit new entry
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const identifier = getClientIdentifier(request);
+    const rateLimitResult = rateLimit(`challenge:${identifier}`, RATE_LIMITS.CHALLENGE);
+
+    if (!rateLimitResult.success) {
+      const resetIn = Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000 / 60);
+      return NextResponse.json(
+        { success: false, error: `Too many submissions. Please try again in ${resetIn} minutes.` },
+        { status: 429 }
+      );
+    }
+
     // Check if Firebase is configured
     if (!db) {
       return NextResponse.json(
@@ -32,7 +46,26 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { platform, hashtag, username, postUrl, mediaUrl, caption } = body;
+    const { platform, hashtag, username, postUrl, mediaUrl, caption, captchaToken, honeypot } = body;
+
+    // Honeypot check
+    if (!checkHoneypot(honeypot)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid submission' },
+        { status: 400 }
+      );
+    }
+
+    // CAPTCHA verification (if provided)
+    if (captchaToken) {
+      const isValidCaptcha = await verifyCaptcha(captchaToken);
+      if (!isValidCaptcha) {
+        return NextResponse.json(
+          { success: false, error: 'Verification failed. Please try again.' },
+          { status: 400 }
+        );
+      }
+    }
 
     // Validate required fields
     if (!platform || !hashtag || !username || !postUrl) {
