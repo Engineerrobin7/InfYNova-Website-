@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
+import { rateLimit, getClientIdentifier, RATE_LIMITS } from '@/app/lib/rate-limit';
 
 // Initialize Firebase Admin only if credentials are available
 let db: any = null;
@@ -23,6 +24,17 @@ if (!getApps().length && process.env.FIREBASE_CLIENT_EMAIL && process.env.FIREBA
 // Admin endpoint to verify and approve entries
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting (for admin actions)
+    const identifier = getClientIdentifier(request);
+    const rateLimitResult = rateLimit(`verify:${identifier}`, RATE_LIMITS.API);
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { success: false, error: 'Too many requests. Please try again later.' },
+        { status: 429 }
+      );
+    }
+
     // Check if Firebase is configured
     if (!db) {
       return NextResponse.json(

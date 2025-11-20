@@ -1,8 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { rateLimit, getClientIdentifier, RATE_LIMITS } from '@/app/lib/rate-limit';
 
 // Manual trigger for hashtag tracking (for testing)
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting (for admin actions)
+    const identifier = getClientIdentifier(request);
+    const rateLimitResult = rateLimit(`admin:${identifier}`, RATE_LIMITS.API);
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { success: false, error: 'Too many requests. Please try again later.' },
+        { status: 429 }
+      );
+    }
+
     // TODO: Add admin authentication here
     
     // Call the cron endpoint

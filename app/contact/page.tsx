@@ -4,8 +4,14 @@ import { Navbar } from "../components/navbar";
 import { Footer } from "../components/Footer";
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Send, MessageSquare } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
+
+declare global {
+  interface Window {
+    grecaptcha: any;
+  }
+}
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -16,6 +22,28 @@ export default function ContactPage() {
     message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [captchaLoaded, setCaptchaLoaded] = useState(false);
+  const formStartTime = useRef<number>(Date.now());
+
+  useEffect(() => {
+    // Load reCAPTCHA script
+    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+    if (!siteKey) return;
+
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => setCaptchaLoaded(true);
+    document.head.appendChild(script);
+
+    return () => {
+      const existingScript = document.querySelector(`script[src*="recaptcha"]`);
+      if (existingScript) {
+        document.head.removeChild(existingScript);
+      }
+    };
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,41 +54,55 @@ export default function ContactPage() {
     setIsSubmitting(true);
 
     try {
-      // Import Firebase functions
-      const { db } = await import('@/lib/firebase/config');
-      const { collection, addDoc, serverTimestamp } = await import('firebase/firestore');
+      let captchaToken = '';
       
-      if (!db) {
-        throw new Error('Database not configured');
+      // Get reCAPTCHA token if available
+      if (captchaLoaded && window.grecaptcha) {
+        const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+        if (siteKey) {
+          captchaToken = await window.grecaptcha.execute(siteKey, { action: 'contact' });
+        }
       }
 
-      // Save contact form submission to Firestore
-      await addDoc(collection(db, 'contact_submissions'), {
-        name: formData.name,
-        email: formData.email.toLowerCase(),
-        phone: formData.phone || null,
-        subject: formData.subject,
-        message: formData.message,
-        submittedAt: serverTimestamp(),
-        status: 'new',
-        read: false
+      // Submit to API route with rate limiting and CAPTCHA
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          captchaToken,
+          honeypot: '', // Empty honeypot field
+        }),
       });
 
-      // Track contact form submission
-      const { trackContactFormSubmission } = await import('@/lib/analytics');
-      trackContactFormSubmission(formData.subject);
-      
-      toast.success("Message sent successfully!", {
-        description: "We'll get back to you within 24 hours."
-      });
-      
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        subject: "",
-        message: ""
-      });
+      const data = await response.json();
+
+      if (response.ok) {
+        // Track contact form submission
+        try {
+          const { trackContactFormSubmission } = await import('@/lib/analytics');
+          trackContactFormSubmission(formData.subject);
+        } catch (analyticsError) {
+          console.error('Analytics error:', analyticsError);
+        }
+        
+        toast.success("Message sent successfully!", {
+          description: data.message || "We'll get back to you within 24 hours."
+        });
+        
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          subject: "",
+          message: ""
+        });
+        formStartTime.current = Date.now();
+      } else {
+        toast.error("Failed to send message", {
+          description: data.error || "Please try again later."
+        });
+      }
     } catch (error: any) {
       console.error("Contact form error:", error);
       toast.error("Failed to send message", {

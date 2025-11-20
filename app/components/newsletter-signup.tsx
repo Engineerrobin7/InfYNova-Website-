@@ -1,40 +1,85 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Mail, Check, Loader2 } from "lucide-react";
+
+declare global {
+  interface Window {
+    grecaptcha: any;
+  }
+}
 
 export function NewsletterSignup() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+  const [captchaLoaded, setCaptchaLoaded] = useState(false);
+  const formStartTime = useRef<number>(Date.now());
+
+  useEffect(() => {
+    // Load reCAPTCHA script
+    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+    if (!siteKey) return;
+
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => setCaptchaLoaded(true);
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
 
     try {
-      // TODO: Integrate with your email service (Mailchimp, SendGrid, etc.)
+      let captchaToken = '';
+      
+      // Get reCAPTCHA token if available
+      if (captchaLoaded && window.grecaptcha) {
+        const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+        if (siteKey) {
+          captchaToken = await window.grecaptcha.execute(siteKey, { action: 'newsletter' });
+        }
+      }
+
       const response = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ 
+          email,
+          captchaToken,
+          honeypot: '', // Empty honeypot field
+        }),
       });
+
+      const data = await response.json();
 
       if (response.ok) {
         setStatus("success");
-        setMessage("Thanks for subscribing! Check your email.");
+        setMessage(data.message || "Thanks for subscribing! Check your email.");
         setEmail("");
+        formStartTime.current = Date.now();
       } else {
         setStatus("error");
-        setMessage("Something went wrong. Please try again.");
+        setMessage(data.error || "Something went wrong. Please try again.");
       }
     } catch (error) {
       setStatus("error");
       setMessage("Failed to subscribe. Please try again.");
     }
 
-    setTimeout(() => setStatus("idle"), 5000);
+    setTimeout(() => {
+      if (status !== "success") {
+        setStatus("idle");
+      }
+    }, 5000);
   };
 
   return (
