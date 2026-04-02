@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Button } from "./ui/button";
 import { ThemeToggle } from "./theme-toggle";
 import { Menu, X, ArrowRight, LogIn } from "lucide-react";
@@ -65,11 +66,16 @@ export function Navbar() {
     >
       <div className="container flex items-center justify-between py-3 md:py-4">
         <div className="flex items-center gap-2">
-          <Link href="/" className="flex items-center" aria-label="Infynova home page">
-            <h1 className="text-xl md:text-2xl font-light tracking-tighter">
-              <span className="font-bold">INFY</span>NOVA
-              <span className="text-xs text-primary/80 ml-2 hidden sm:inline-block">Awaken the Future</span>
-            </h1>
+          <Link href="/" className="flex items-center gap-2 group" aria-label="Infynova home page">
+            <Image
+              src="/logo.svg"
+              alt="InfYNova logo"
+              width={160}
+              height={42}
+              priority
+              className="h-8 md:h-10 w-auto"
+            />
+            <span className="sr-only">InfYNova</span>
           </Link>
         </div>
 

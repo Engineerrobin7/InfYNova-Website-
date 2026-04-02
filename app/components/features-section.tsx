@@ -152,21 +152,49 @@ export function FeaturesSection() {
         </motion.div>
         
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-6 md:grid-rows-2 gap-4 h-full"
           variants={containerVariants}
           initial="hidden"
           animate={sectionInView ? "visible" : "hidden"}
         >
-          {features.map((feature, index) => (
-            <FeatureCard 
-              key={feature.title}
-              icon={feature.icon}
-              title={feature.title}
-              description={feature.description}
-              delay={index * 120}
-              index={index}
-            />
-          ))}
+          {/* Main Hero Bento Card */}
+          <div className="md:col-span-4 md:row-span-2 relative overflow-hidden group rounded-3xl border border-white/5 bg-gradient-to-br from-primary/10 to-accent/5 p-8 transition-all hover:border-primary/50">
+             <div className="relative z-10 h-full flex flex-col justify-between">
+                <div>
+                  <Camera className="w-12 h-12 text-primary mb-4" />
+                  <h3 className="text-3xl font-display font-bold mb-3 tracking-tight">108MP Computational Photography</h3>
+                  <p className="text-foreground/60 max-w-sm text-lg leading-relaxed">
+                    Harnessing AI to capture detail beyond human vision. Every pixel is optimized for professional-grade results in any lighting.
+                  </p>
+                </div>
+                <div className="mt-8">
+                   <div className="flex gap-2 mb-2">
+                     <span className="px-3 py-1 bg-primary/20 rounded-full text-[10px] uppercase font-bold tracking-widest text-primary">Ultra-Wide</span>
+                     <span className="px-3 py-1 bg-accent/20 rounded-full text-[10px] uppercase font-bold tracking-widest text-accent">Night-Sight</span>
+                   </div>
+                </div>
+             </div>
+             {/* Abstract Glow */}
+             <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 blur-[100px] -z-10 group-hover:bg-primary/30 transition-colors"></div>
+          </div>
+
+          {/* Performance Card */}
+          <div className="md:col-span-2 relative overflow-hidden group rounded-3xl border border-white/5 bg-accent/5 p-8 transition-all hover:border-accent/50">
+             <Cpu className="w-10 h-10 text-accent mb-4" />
+             <h3 className="text-xl font-bold mb-2">Snapdragon 8 Gen 3</h3>
+             <p className="text-foreground/60 text-sm">
+                Custom-tuned for InfYNova to deliver 40% more AI efficiency.
+             </p>
+          </div>
+
+          {/* Battery Card */}
+          <div className="md:col-span-2 relative overflow-hidden group rounded-3xl border border-white/5 bg-white/[0.02] p-8 transition-all hover:border-foreground/20">
+             <Battery className="w-10 h-10 text-foreground/40 mb-4 group-hover:text-primary transition-colors" />
+             <h3 className="text-xl font-bold mb-2">5500mAh Intelligent Cell</h3>
+             <p className="text-foreground/60 text-sm">
+                2-day battery life powered by NovaOS adaptation.
+             </p>
+          </div>
         </motion.div>
       </div>
       

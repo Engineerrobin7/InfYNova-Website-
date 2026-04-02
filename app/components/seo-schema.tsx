@@ -5,7 +5,7 @@ export function SEOSchema() {
     "name": "InfYNova",
     "alternateName": "InfyNova",
     "url": "https://infynova.in",
-    "logo": "https://infynova.in/logo.png",
+    "logo": "https://infynova.in/logo.svg",
     "description": "India's first AI-powered smartphone company building revolutionary devices with NovaOS",
     "foundingDate": "2024",
     "foundingLocation": {

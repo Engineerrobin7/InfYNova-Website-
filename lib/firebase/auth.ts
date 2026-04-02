@@ -20,6 +20,7 @@ export interface UserData {
   createdAt: any;
   emailVerified: boolean;
   lastLogin: any;
+  role?: string;
 }
 
 // Sign up with email and password

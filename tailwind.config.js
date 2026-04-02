@@ -63,8 +63,9 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        'sans': ['Inter', 'system-ui', 'sans-serif'],
-        'nova': ['Inter', 'SF Pro Display', 'system-ui', 'sans-serif'],
+        'sans': ['Outfit', 'Inter', 'system-ui', 'sans-serif'],
+        'display': ['Playfair Display', 'serif'],
+        'nova': ['Outfit', 'Inter', 'SF Pro Display', 'system-ui', 'sans-serif'],
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',

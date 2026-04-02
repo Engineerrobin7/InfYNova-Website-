@@ -61,17 +61,17 @@ export function HeroSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6 relative z-10">
             <motion.h1 
-              className="heading-xl leading-tight"
+              className="heading-xl leading-[1.1] font-display"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1 }}
             >
-              <motion.div className="overflow-hidden inline-block">
+              <div className="overflow-hidden">
                 {titleArray.map((char, index) => (
                   <motion.span
                     key={`title-${index}`}
-                    className={`inline-block ${char === "I" || char === "N" || char === "F" ? "text-gradient" : ""}`}
-                    initial={{ y: 100 }}
+                    className={`inline-block ${char === "I" || char === "N" || char === "F" || char === "Y" ? "text-primary italic" : ""}`}
+                    initial={{ y: "100%" }}
                     animate={{ y: 0 }}
                     transition={{
                       delay: 0.05 * index,
@@ -82,45 +82,32 @@ export function HeroSection() {
                     {char === " " ? "\u00A0" : char}
                   </motion.span>
                 ))}
-              </motion.div>
+              </div>
             </motion.h1>
             
             <motion.div 
-              className="body-lg font-light gradient-text-primary mt-4"
+              className="body-lg font-medium text-accent mt-4 tracking-wide"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
             >
-              {taglineArray.map((char, index) => (
-                <motion.span
-                  key={`tagline-${index}`}
-                  className="inline-block"
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{
-                    delay: 0.7 + 0.04 * index,
-                    duration: 0.6
-                  }}
-                >
-                  {char === " " ? "\u00A0" : char}
-                </motion.span>
-              ))}
+              REVOLUTIONIZING SMARTPHONES <br className="md:hidden" /> FOR A SMARTER WORLD.
             </motion.div>
             
             <motion.p 
-              className="body-md text-foreground/70 max-w-lg mt-6 leading-relaxed"
+              className="body-md text-foreground/60 max-w-lg mt-6 leading-relaxed"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1.3, duration: 0.8 }}
+              transition={{ delay: 1, duration: 0.8 }}
             >
-              The design-forward, AI-powered performance phone that's redefining what a smartphone can be. Experience the revolution with cutting-edge technology that adapts to your life.
+              State-of-the-art AI performance meets bespoke industrial design. InfYNova is more than a phone—it's the future of human-machine harmony.
             </motion.p>
             
             <motion.div 
               className="flex flex-wrap gap-4 mt-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.5, duration: 0.8 }}
+              transition={{ delay: 1.2, duration: 0.8 }}
             >
               <motion.div
                 whileHover={{ scale: 1.05 }}
@@ -128,17 +115,11 @@ export function HeroSection() {
               >
                 <Button 
                   size="lg" 
-                  className="group relative overflow-hidden"
+                  className="group relative overflow-hidden bg-primary text-white hover:bg-primary/90 rounded-full px-8"
                   onClick={handleJoinMovement}
                 >
-                  <span className="relative z-10">Join the Movement</span>
+                  <span className="relative z-10">Pre-Order Now</span>
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  <motion.span 
-                    className="absolute inset-0 bg-gradient-to-r from-primary/80 to-accent/80 opacity-0 group-hover:opacity-100"
-                    initial={{ x: "-100%" }}
-                    whileHover={{ x: 0 }}
-                    transition={{ duration: 0.3 }}
-                  />
                 </Button>
               </motion.div>
               
@@ -149,16 +130,10 @@ export function HeroSection() {
                 <Button 
                   size="lg" 
                   variant="outline" 
-                  className="group relative overflow-hidden"
+                  className="group relative overflow-hidden border-primary/30 hover:border-primary rounded-full px-8"
                   onClick={() => window.location.href = "/novaos"}
                 >
-                  <span className="relative z-10">Discover NovaOS</span>
-                  <motion.span 
-                    className="absolute inset-0 bg-gradient-to-r from-background to-background/50 opacity-0 group-hover:opacity-100"
-                    initial={{ x: "-100%" }}
-                    whileHover={{ x: 0 }}
-                    transition={{ duration: 0.3 }}
-                  />
+                  <span className="relative z-10">Explore NovaOS</span>
                 </Button>
               </motion.div>
             </motion.div>

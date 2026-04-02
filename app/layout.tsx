@@ -160,6 +160,7 @@ export default function RootLayout({
         <GoogleTagManager gtmId={GTM_ID} />
         <ApolloTracking />
         <link rel="canonical" href="https://infynova.in" />
+        <link rel="icon" href="/logo.svg" />
       </head>
       <body className="font-sans antialiased" suppressHydrationWarning>
         <GoogleTagManagerNoScript gtmId={GTM_ID} />

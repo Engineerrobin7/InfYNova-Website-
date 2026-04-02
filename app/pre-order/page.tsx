@@ -7,6 +7,13 @@ import { Footer } from "../components/Footer";
 import { Check, Sparkles, Gift, Truck, Shield } from "lucide-react";
 import { ProductHuntBadge } from "../components/product-hunt-badge";
 import { toast } from "sonner";
+import { useEffect, useRef } from "react";
+
+declare global {
+  interface Window {
+    grecaptcha: any;
+  }
+}
 
 export default function PreOrderPage() {
   const [selectedModel, setSelectedModel] = useState("pro");
@@ -17,6 +24,28 @@ export default function PreOrderPage() {
     address: "",
     model: "pro"
   });
+
+  const [captchaLoaded, setCaptchaLoaded] = useState(false);
+
+  useEffect(() => {
+    // Load reCAPTCHA script
+    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+    if (!siteKey) return;
+
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => setCaptchaLoaded(true);
+    document.head.appendChild(script);
+
+    return () => {
+      const existingScript = document.querySelector(`script[src*="recaptcha"]`);
+      if (existingScript) {
+        document.head.removeChild(existingScript);
+      }
+    };
+  }, []);
 
   const models = {
     base: {
@@ -64,12 +93,26 @@ export default function PreOrderPage() {
     setSubmitting(true);
 
     try {
+      let captchaToken = '';
+      
+      // Get reCAPTCHA token if available
+      if (captchaLoaded && window.grecaptcha) {
+        const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+        if (siteKey) {
+          captchaToken = await window.grecaptcha.execute(siteKey, { action: 'pre_order' });
+        }
+      }
+
       const response = await fetch('/api/pre-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          captchaToken,
+          honeypot: '',
+        }),
       });
 
       const data = await response.json();
@@ -130,17 +173,17 @@ export default function PreOrderPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-12"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-              Pre-Order InfYNova
+            <h1 className="text-5xl md:text-7xl font-display font-bold mb-4 text-foreground tracking-tight">
+              Pre-Order InfY<span className="text-primary italic">Nova</span>
             </h1>
-            <p className="text-xl text-muted-foreground mb-6">
-              Be among the first to experience India's AI smartphone
+            <p className="text-xl text-foreground/60 mb-8 max-w-2xl mx-auto">
+              Secure your place in the next evolution of mobile intelligence. <br className="hidden md:block" /> India's first AI-native smartphone.
             </p>
             
-            {/* Early Bird Offer Banner */}
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 to-accent/20 px-6 py-3 rounded-full border border-primary/30">
-              <Gift className="w-5 h-5 text-primary" />
-              <span className="font-semibold">Early Bird Offer: Save ₹5,000 + Free NovaOS Premium</span>
+            {/* Early Bird Offer Banner - Updated to Lime/Blue */}
+            <div className="inline-flex items-center gap-3 bg-accent text-accent-foreground px-8 py-4 rounded-full font-bold shadow-[0_0_30px_rgba(184,252,60,0.3)] border border-accent/50 animate-pulse">
+              <Gift className="w-5 h-5" />
+              <span className="uppercase tracking-widest text-sm">Early Bird: Save ₹5,000 + Global Priority</span>
             </div>
           </motion.div>
 

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Trophy, Share2, Download, Zap } from "lucide-react";
+import { toast } from "sonner";
 
 export function PhoneBuilderGame() {
   const [step, setStep] = useState(0);
@@ -93,7 +94,9 @@ export function PhoneBuilderGame() {
       navigator.share({ title: "My InfyNova Build", text, url: window.location.href });
     } else {
       navigator.clipboard.writeText(text);
-      alert("Score copied! Share it on social media!");
+      toast.success("Score copied!", {
+        description: "Share it on social media to challenge your friends!",
+      });
     }
   };
 
