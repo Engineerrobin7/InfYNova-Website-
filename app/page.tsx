@@ -8,7 +8,8 @@ import { SpecsSection } from "./components/specs-section";
 import { DesignSection } from "./components/design-section";
 import { CTASection } from "./components/cta-section";
 import { Footer } from "./components/Footer";
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
+import dynamic from "next/dynamic";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { InteractiveFeatures } from "./components/interactive-features";
 import { ContentLoader } from "./components/content-loader";
@@ -31,11 +32,13 @@ import { ViralPopup } from "./components/viral-popup";
 import { AffiliateProgram } from "./components/affiliate-program";
 import { SEOBoost } from "./components/seo-boost";
 import { AutoShareButtons } from "./components/auto-share-buttons";
+import { AIEnhancedPreview } from "./components/ai-enhanced-preview";
 import { Calendar, User, ArrowRight } from "lucide-react";
 
-// Lazy load the 3D component for better performance with more specific chunking
-const LazyProduct3DView = lazy(() => 
-  import("./components/product-3d-view").then(mod => ({ default: mod.Product3DView }))
+// Lazy load the 3D component with next/dynamic for performance (no SSR to save JS load)
+const LazyProduct3DView = dynamic(
+  () => import("./components/product-3d-view").then(mod => mod.Product3DView),
+  { ssr: false }
 );
 
 export default function Home() {
@@ -94,7 +97,7 @@ export default function Home() {
             id="experience-3d-heading"
             className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-primary/90 to-accent"
           >
-            Experience Infinova in 3D
+            Experience InfYNova in 360° Vision
           </h2>
           
           {/* Static decorative elements to prevent layout shift */}
@@ -160,6 +163,7 @@ export default function Home() {
         
         {/* REVOLUTIONARY: Viral Challenges */}
         <ViralChallenges />
+        <AIEnhancedPreview />
         
         {/* Comparison Tool Section */}
         <section className="py-20 bg-gradient-to-b from-background to-muted/30">
