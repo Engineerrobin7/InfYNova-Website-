@@ -3,6 +3,7 @@ import { rateLimit, getClientIdentifier, RATE_LIMITS } from '@/app/lib/rate-limi
 import { verifyCaptcha, checkHoneypot } from '@/app/lib/captcha';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
+import { sendNewsletterWelcome } from '@/app/lib/email';
 
 // Initialize Firebase Admin
 let db: any = null;
@@ -101,18 +102,13 @@ export async function POST(request: NextRequest) {
           userAgent: request.headers.get('user-agent') || 'unknown',
           status: 'active',
         });
+        await sendNewsletterWelcome(email.toLowerCase().trim());
       } catch (dbError) {
         console.error('Database error:', dbError);
         // Continue even if database fails
       }
     }
 
-    // TODO: Integrate with your email service
-    // Example integrations:
-    // - Mailchimp: https://mailchimp.com/developer/
-    // - SendGrid: https://docs.sendgrid.com/
-    // - ConvertKit: https://developers.convertkit.com/
-    
     console.log("Newsletter signup:", email);
 
     return NextResponse.json(

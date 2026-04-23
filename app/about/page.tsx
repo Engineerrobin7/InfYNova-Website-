@@ -54,30 +54,81 @@ export default function AboutPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="prose prose-lg dark:prose-invert mx-auto"
+                className="space-y-8"
               >
-                <h2 className="text-3xl font-bold mb-6">Our Story</h2>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  InfYNova was born from a simple belief: technology should feel alive, intuitive, and human-centric. 
-                  We're not just building smartphones; we're crafting experiences that empower the next generation of thinkers, 
-                  creators, and innovators.
-                </p>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  Founded in India, InfYNova represents the fusion of cutting-edge artificial intelligence with elegant design. 
-                  Our mission is to create devices that don't just respond to your needs—they anticipate them, learn from you, 
-                  and grow with you.
-                </p>
-                <p className="text-muted-foreground leading-relaxed">
-                  Every InfYNova device is a testament to our commitment to innovation, quality, and the belief that 
-                  technology should enhance human potential, not replace it.
-                </p>
+                <div>
+                  <h2 className="text-4xl md:text-5xl font-bold mb-8">Why We Built InfyNova</h2>
+                  <p className="text-lg text-white/80 leading-relaxed mb-6">
+                    I started InfyNova because I was tired of phones that felt like surveillance devices. Every major smartphone company treats your data like a commodity—learning about you not for your benefit, but to sell better ads.
+                  </p>
+                  <p className="text-lg text-white/80 leading-relaxed mb-6">
+                    That's broken. A phone should be your assistant, not a spy. It should learn YOUR habits to make YOUR life better, not monetize your attention.
+                  </p>
+                  <p className="text-lg text-white/80 leading-relaxed mb-6">
+                    So I assembled a team of engineers, designers, and visionaries to build something different. We built InfyNova—a phone with a neural AI core that lives on YOUR device, not in some data center. A phone that's made in India, designed for the world.
+                  </p>
+                </div>
+
+                <div className="border-t border-white/10 pt-12">
+                  <h3 className="text-2xl font-bold mb-6">Our North Star</h3>
+                  <p className="text-lg text-white/80 leading-relaxed">
+                    Every feature, every design decision, every line of code flows from one principle: <span className="text-blue-400 font-semibold">Technology should amplify human potential, not replace it.</span>
+                  </p>
+                </div>
               </motion.div>
             </div>
           </div>
         </section>
 
-        {/* Our Values */}
-        <section className="py-16 bg-muted/30">
+        {/* Three Pillars */}
+        <section className="py-20 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl font-bold mb-4">Built on Three Pillars</h2>
+              <p className="text-lg text-white/60 max-w-2xl mx-auto">
+                Every decision we make, every feature we build—it comes down to these three commitments
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {[
+                {
+                  title: "Neural Intelligence",
+                  description: "AI that learns you—not data farms. On-device processing. Privacy-first by design.",
+                  icon: "🧠"
+                },
+                {
+                  title: "Precision Engineering",
+                  description: "Aerospace-grade materials. Handcrafted attention to detail. Built to last a decade.",
+                  icon: "⚙️"
+                },
+                {
+                  title: "Made in India",
+                  description: "Designed and engineered in India. Contributing to Atmanirbhar Bharat. Global standards, local values.",
+                  icon: "🇮🇳"
+                }
+              ].map((pillar, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.15 }}
+                  className="bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 rounded-2xl p-8 hover:border-white/20 transition-all"
+                >
+                  <div className="text-5xl mb-6">{pillar.icon}</div>
+                  <h3 className="text-2xl font-bold mb-4 text-white">{pillar.title}</h3>
+                  <p className="text-white/70 leading-relaxed">{pillar.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
           <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}

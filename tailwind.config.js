@@ -49,13 +49,10 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Keep the original Nova colors for compatibility
-        'nova-black': '#0a0a0a',
-        'nova-midnight': '#1a1a2e',
-        'nova-blue': '#00d4ff',
-        'nova-purple': '#8b5cf6',
-        'nova-silver': '#e5e7eb',
-        'nova-glow': '#00ffff',
+        // Premium Monochromatic Accents
+        'premium-black': '#000000',
+        'premium-gray': '#1c1c1e',
+        'premium-white': '#f5f5f7',
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -63,42 +60,27 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        'sans': ['Outfit', 'Inter', 'system-ui', 'sans-serif'],
-        'display': ['Playfair Display', 'serif'],
-        'nova': ['Outfit', 'Inter', 'SF Pro Display', 'system-ui', 'sans-serif'],
+        'sans': ['Inter', 'SF Pro Display', 'system-ui', 'sans-serif'],
+        'display': ['Inter', 'SF Pro Display', 'system-ui', 'sans-serif'],
       },
       animation: {
-        'float': 'float 6s ease-in-out infinite',
-        'glow': 'glow 2s ease-in-out infinite alternate',
-        'particle': 'particle 20s linear infinite',
-        'morph': 'morph 3s ease-in-out infinite',
-        'ripple': 'ripple 0.6s linear',
+        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'scale-in': 'scaleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'subtle-pulse': 'subtlePulse 4s ease-in-out infinite alternate',
       },
       keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-20px)' },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        glow: {
-          '0%': { boxShadow: '0 0 20px rgba(0, 212, 255, 0.5)' },
-          '100%': { boxShadow: '0 0 40px rgba(0, 212, 255, 0.8)' },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
         },
-        particle: {
-          '0%': { transform: 'translateX(-100vw) translateY(0px)' },
-          '100%': { transform: 'translateX(100vw) translateY(-100px)' },
+        subtlePulse: {
+          '0%': { opacity: '0.8', transform: 'scale(1)' },
+          '100%': { opacity: '1', transform: 'scale(1.02)' },
         },
-        morph: {
-          '0%, 100%': { borderRadius: '20px' },
-          '50%': { borderRadius: '50px' },
-        },
-        ripple: {
-          '0%': { transform: 'scale(0)', opacity: '1' },
-          '100%': { transform: 'scale(4)', opacity: '0' },
-        },
-      },
-      backgroundImage: {
-        'nova-gradient': 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%)',
-        'hero-gradient': 'radial-gradient(ellipse at center, rgba(0, 212, 255, 0.1) 0%, transparent 70%)',
       },
     },
   },

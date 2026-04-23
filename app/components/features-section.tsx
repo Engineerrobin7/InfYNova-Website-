@@ -1,109 +1,13 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { Camera, Cpu, Battery, Clock, RotateCw } from "lucide-react";
+import { Camera, Cpu, Battery, BatteryCharging, Zap, Smartphone, Shield, Layers } from "lucide-react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
-interface FeatureCardProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  delay: number;
-  index: number;
-}
-
-function FeatureCard({ icon, title, description, delay, index }: FeatureCardProps) {
-  const [ref, inView] = useInView({
-    threshold: 0.2,
-    triggerOnce: true
-  });
-  
-  const cardVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 40,
-      rotateX: 10,
-      rotateY: 10,
-    },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      rotateX: 0,
-      rotateY: 0,
-      transition: { 
-        type: "spring",
-        stiffness: 50,
-        delay: delay * 0.001,
-        duration: 0.8
-      }
-    }
-  };
-
-  const [isHovered, setIsHovered] = useState(false);
-  
-  return (
-    <motion.div 
-      ref={ref}
-      id={`feature-${title}`}
-      variants={cardVariants}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
-      whileHover={{ 
-        scale: 1.05, 
-        rotateY: index % 2 === 0 ? 5 : -5,
-        transition: { type: "spring", stiffness: 400 }
-      }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="glass p-6 rounded-xl cursor-pointer transform-gpu perspective-1000 transition-all duration-300"
-    >
-      <div className="relative h-12 w-12 rounded-lg bg-primary/20 dark:bg-primary/30 flex items-center justify-center mb-4 overflow-hidden group">
-        <motion.div 
-          animate={isHovered ? { rotateZ: 360 } : { rotateZ: 0 }}
-          transition={{ duration: 1, ease: "easeInOut" }}
-        >
-          {icon}
-        </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-tr from-primary/0 to-primary/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-      </div>
-      <h3 className="text-xl font-bold mb-2">{title}</h3>
-      <p className="text-foreground/70">{description}</p>
-    </motion.div>
-  );
-}
-
 export function FeaturesSection() {
-  const features = [
-    {
-      icon: <Camera className="text-primary" />,
-      title: "Pro Camera System",
-      description: "Capture stunning photos and videos with our advanced 108MP camera system."
-    },
-    {
-      icon: <Cpu className="text-primary" />,
-      title: "Next-gen Processor",
-      description: "Experience lightning-fast performance with our custom Infynova chipset."
-    },
-    {
-      icon: <Battery className="text-primary" />,
-      title: "All-day Battery",
-      description: "Stay powered all day with our high-capacity intelligent battery system."
-    },
-    {
-      icon: <Clock className="text-primary" />,
-      title: "Fast Charging",
-      description: "Get hours of power in just minutes with our 100W fast charging technology."
-    },
-    {
-      icon: <RotateCw className="text-primary" />,
-      title: "360° Experience",
-      description: "Immerse yourself in our revolutionary user interface designed for seamless interaction."
-    }
-  ];
-
   const { ref: sectionRef, inView: sectionInView } = useInView({
-    threshold: 0.2,
+    threshold: 0.1,
     triggerOnce: true
   });
 
@@ -112,119 +16,172 @@ export function FeaturesSection() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3
+        staggerChildren: 0.08,
+        delayChildren: 0.1
       }
     }
   };
 
-  const headingRef = useRef<HTMLDivElement>(null);
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-    
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
+  };
 
   return (
-    <section id="features" ref={sectionRef} className="py-20 relative overflow-hidden">
-      <div className="container mx-auto px-4">
+    <section id="features" ref={sectionRef} className="py-32 relative bg-gradient-to-b from-black to-black/95">
+      <div className="container mx-auto px-4 md:px-6 max-w-6xl">
+        {/* Section Header */}
         <motion.div 
-          ref={headingRef} 
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          animate={sectionInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          style={{
-            transform: `translateY(${scrollY * 0.1}px)`
-          }}
+          className="text-center mb-20"
+          initial={{ opacity: 0, y: 20 }}
+          animate={sectionInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.8 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary/90 to-accent">
-            Revolutionary Features
+          <h2 className="text-5xl md:text-6xl font-bold tracking-tight text-white mb-6">
+            The Hardware That Thinks
           </h2>
-          <p className="text-foreground/70 max-w-xl mx-auto">
-            Our latest smartphone comes packed with cutting-edge technology designed to transform your mobile experience.
+          <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto">
+            Every component engineered for performance, privacy, and longevity.
           </p>
         </motion.div>
         
+        {/* Feature Grid */}
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-6 md:grid-rows-2 gap-4 h-full"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
           variants={containerVariants}
           initial="hidden"
           animate={sectionInView ? "visible" : "hidden"}
         >
-          {/* Main Hero Bento Card */}
-          <div className="md:col-span-4 md:row-span-2 relative overflow-hidden group rounded-3xl border border-white/5 bg-gradient-to-br from-primary/10 to-accent/5 p-8 transition-all hover:border-primary/50">
-             <div className="relative z-10 h-full flex flex-col justify-between">
-                <div>
-                  <Camera className="w-12 h-12 text-primary mb-4" />
-                  <h3 className="text-3xl font-display font-bold mb-3 tracking-tight">108MP Computational Photography</h3>
-                  <p className="text-foreground/60 max-w-sm text-lg leading-relaxed">
-                    Harnessing AI to capture detail beyond human vision. Every pixel is optimized for professional-grade results in any lighting.
-                  </p>
+          {/* AI Core - Featured */}
+          <motion.div 
+            variants={itemVariants}
+            className="md:col-span-2 group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-white/20 p-8 md:p-10 transition-all duration-300"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative z-10">
+              <div className="mb-6 inline-flex">
+                <div className="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                  <Cpu className="w-6 h-6 text-blue-400" strokeWidth={1.5} />
                 </div>
-                <div className="mt-8">
-                   <div className="flex gap-2 mb-2">
-                     <span className="px-3 py-1 bg-primary/20 rounded-full text-[10px] uppercase font-bold tracking-widest text-primary">Ultra-Wide</span>
-                     <span className="px-3 py-1 bg-accent/20 rounded-full text-[10px] uppercase font-bold tracking-widest text-accent">Night-Sight</span>
-                   </div>
+              </div>
+              <h3 className="text-3xl font-bold text-white mb-3">Neural AI Core</h3>
+              <p className="text-white/70 text-lg leading-relaxed">
+                Dedicated on-device learning. Understands your habits, optimizes performance, protects your privacy. The processor never sends your data to the cloud.
+              </p>
+              <div className="mt-6 flex items-center gap-2 text-blue-400 text-sm font-semibold">
+                <span className="w-2 h-2 rounded-full bg-blue-400"></span>
+                Native intelligence
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Camera System */}
+          <motion.div 
+            variants={itemVariants}
+            className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-white/20 p-8 transition-all duration-300"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative z-10">
+              <div className="mb-4 inline-flex">
+                <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                  <Camera className="w-5 h-5 text-purple-400" strokeWidth={1.5} />
                 </div>
-             </div>
-             {/* Abstract Glow */}
-             <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 blur-[100px] -z-10 group-hover:bg-primary/30 transition-colors"></div>
-          </div>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">108MP Camera</h3>
+              <p className="text-white/60 text-sm leading-relaxed">
+                Captures 4x more light. AI-enhanced processing. Cinema mode in your pocket.
+              </p>
+            </div>
+          </motion.div>
 
-          {/* Performance Card */}
-          <div className="md:col-span-2 relative overflow-hidden group rounded-3xl border border-white/5 bg-accent/5 p-8 transition-all hover:border-accent/50">
-             <Cpu className="w-10 h-10 text-accent mb-4" />
-             <h3 className="text-xl font-bold mb-2">Snapdragon 8 Gen 3</h3>
-             <p className="text-foreground/60 text-sm">
-                Custom-tuned for InfYNova to deliver 40% more AI efficiency.
-             </p>
-          </div>
+          {/* Battery Life */}
+          <motion.div 
+            variants={itemVariants}
+            className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-white/20 p-8 transition-all duration-300"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative z-10">
+              <div className="mb-4 inline-flex">
+                <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center">
+                  <BatteryCharging className="w-5 h-5 text-green-400" strokeWidth={1.5} />
+                </div>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">3+ Day Battery</h3>
+              <p className="text-white/60 text-sm leading-relaxed">
+                Industry-leading efficiency. Recharges in 15 minutes.
+              </p>
+            </div>
+          </motion.div>
 
-          {/* Battery Card */}
-          <div className="md:col-span-2 relative overflow-hidden group rounded-3xl border border-white/5 bg-white/[0.02] p-8 transition-all hover:border-foreground/20">
-             <Battery className="w-10 h-10 text-foreground/40 mb-4 group-hover:text-primary transition-colors" />
-             <h3 className="text-xl font-bold mb-2">5500mAh Intelligent Cell</h3>
-             <p className="text-foreground/60 text-sm">
-                2-day battery life powered by NovaOS adaptation.
-             </p>
-          </div>
+          {/* Build Quality */}
+          <motion.div 
+            variants={itemVariants}
+            className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-white/20 p-8 transition-all duration-300"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative z-10">
+              <div className="mb-4 inline-flex">
+                <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center">
+                  <Smartphone className="w-5 h-5 text-orange-400" strokeWidth={1.5} />
+                </div>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Aerospace Grade</h3>
+              <p className="text-white/60 text-sm leading-relaxed">
+                Precision-milled. IP68 rated. Gorilla Glass 2. Built to last.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Privacy First */}
+          <motion.div 
+            variants={itemVariants}
+            className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-white/20 p-8 transition-all duration-300"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative z-10">
+              <div className="mb-4 inline-flex">
+                <div className="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
+                  <Shield className="w-5 h-5 text-red-400" strokeWidth={1.5} />
+                </div>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Private by Design</h3>
+              <p className="text-white/60 text-sm leading-relaxed">
+                Encrypted end-to-end. No cloud snooping. Your data, your control.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* NovaOS Integration */}
+          <motion.div 
+            variants={itemVariants}
+            className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-white/20 p-8 transition-all duration-300"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative z-10">
+              <div className="mb-4 inline-flex">
+                <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center">
+                  <Layers className="w-5 h-5 text-cyan-400" strokeWidth={1.5} />
+                </div>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">NovaOS OS</h3>
+              <p className="text-white/60 text-sm leading-relaxed">
+                Custom intelligent OS. Made in India. Optimized for AI-first computing.
+              </p>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Bottom CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mt-20"
+        >
+          <p className="text-white/60 mb-6">Every feature engineered to advance your life forward.</p>
         </motion.div>
       </div>
-      
-      {/* Enhanced animated background elements */}
-      <motion.div 
-        className="absolute top-1/2 right-0 w-64 h-64 bg-primary/10 rounded-full filter blur-3xl -z-10"
-        animate={{
-          x: [0, 10, 0],
-          y: [0, -10, 0],
-          scale: [1, 1.05, 1],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          repeatType: "reverse"
-        }}
-      ></motion.div>
-      <motion.div 
-        className="absolute bottom-0 left-1/4 w-80 h-80 bg-accent/10 rounded-full filter blur-3xl -z-10"
-        animate={{
-          x: [0, -10, 0],
-          y: [0, 10, 0],
-          scale: [1, 1.1, 1],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          repeatType: "reverse"
-        }}
-      ></motion.div>
     </section>
   );
 }

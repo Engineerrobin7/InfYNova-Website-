@@ -74,9 +74,11 @@ export const SignInForm = ({ onSuccess, onSwitchToSignUp }: SignInFormProps) => 
             <input
               type="email"
               name="email"
+              autoComplete="email"
               value={formData.email}
               onChange={handleChange}
               required
+              autoFocus
               className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
               placeholder="you@example.com"
             />
@@ -90,6 +92,7 @@ export const SignInForm = ({ onSuccess, onSwitchToSignUp }: SignInFormProps) => 
             <input
               type={showPassword ? 'text' : 'password'}
               name="password"
+              autoComplete="current-password"
               value={formData.password}
               onChange={handleChange}
               required

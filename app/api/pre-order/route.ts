@@ -3,6 +3,7 @@ import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 import { rateLimit, getClientIdentifier, RATE_LIMITS } from '@/app/lib/rate-limit';
 import { verifyCaptcha, checkHoneypot } from '@/app/lib/captcha';
+import { sendPreOrderConfirmation } from '@/app/lib/email';
 
 // Initialize Firebase Admin only if credentials are available
 let db: any = null;
@@ -152,8 +153,13 @@ export async function POST(request: NextRequest) {
     // Save to Firestore
     const docRef = await db.collection('pre_orders').add(preOrder);
 
-    // TODO: Send confirmation email
-    // await sendPreOrderConfirmationEmail(email, preOrder);
+    // Send confirmation email via Resend
+    await sendPreOrderConfirmation(email, {
+      name: preOrder.name,
+      orderNumber: preOrder.orderNumber,
+      modelName: preOrder.modelName,
+      price: preOrder.price
+    });
 
     // TODO: Send notification to admin
     // await sendAdminNotification(preOrder);

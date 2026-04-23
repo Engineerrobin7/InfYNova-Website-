@@ -61,6 +61,11 @@ async function generate() {
 
     await sharp(svgBuffer)
       .resize(v.w, v.h)
+      .jpeg({ quality: 90 })
+      .toFile(path.join(outDir, `${v.name}.jpg`));
+
+    await sharp(svgBuffer)
+      .resize(v.w, v.h)
       .webp({ quality: 85 })
       .toFile(outWebp);
 
@@ -69,7 +74,15 @@ async function generate() {
       .avif({ quality: 50 })
       .toFile(outAvif);
 
-    console.log('Generated', outPng, outWebp, outAvif);
+    console.log('Generated', outPng, outWebp, outAvif, path.join(outDir, `${v.name}.jpg`));
+  }
+
+  const logoSvgPath = path.join(outDir, 'logo.svg');
+  if (fs.existsSync(logoSvgPath)) {
+    await sharp(logoSvgPath)
+      .png({ quality: 90 })
+      .toFile(path.join(outDir, 'logo.png'));
+    console.log('Generated', path.join(outDir, 'logo.png'));
   }
 }
 

@@ -60,73 +60,57 @@ export function Navbar() {
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-background/95 shadow-md' : 'bg-background/80'
-      } backdrop-blur-md border-b border-border/50`}
+        isScrolled ? 'bg-background/95 shadow-sm border-b border-border/50' : 'bg-background/80 border-b border-transparent'
+      } backdrop-blur-md`}
       aria-label="Main navigation"
     >
-      <div className="container flex items-center justify-between py-3 md:py-4">
-        <div className="flex items-center gap-2">
+      <div className="container flex items-center justify-between py-3 md:py-4 px-4 md:px-6">
+        {/* Logo */}
+        <div className="flex items-center gap-2 flex-shrink-0">
           <Link href="/" className="flex items-center gap-2 group" aria-label="Infynova home page">
             <Image
               src="/logo.svg"
               alt="InfYNova logo"
-              width={160}
-              height={42}
+              width={140}
+              height={36}
               priority
-              className="h-8 md:h-10 w-auto"
+              className="h-7 md:h-8 w-auto transition-opacity group-hover:opacity-80"
             />
             <span className="sr-only">InfYNova</span>
           </Link>
         </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-          <Link href="/" className={`text-foreground/80 hover:text-primary transition-colors ${pathname === '/' ? 'text-primary' : ''}`}>Home</Link>
-          <Link href="/about" className={`text-foreground/80 hover:text-primary transition-colors ${pathname === '/about' ? 'text-primary' : ''}`}>About</Link>
-          <Link href="/features" className={`text-foreground/80 hover:text-primary transition-colors ${pathname === '/features' ? 'text-primary' : ''}`}>Features</Link>
-          <Link href="/novaos" className={`text-foreground/80 hover:text-primary transition-colors ${pathname === '/novaos' ? 'text-primary' : ''}`}>NovaOS</Link>
-          <Link href="/blog" className={`text-foreground/80 hover:text-primary transition-colors ${pathname === '/blog' ? 'text-primary' : ''}`}>Blog</Link>
-          <Link href="/affiliate" className={`text-foreground/80 hover:text-primary transition-colors ${pathname === '/affiliate' ? 'text-primary' : ''}`}>Affiliate</Link>
+        {/* Desktop Navigation - Minimal */}
+        <nav className="hidden md:flex items-center gap-8 flex-1 justify-center">
+          <Link href="/" className={`text-sm font-medium transition-colors ${pathname === '/' ? 'text-white' : 'text-white/70 hover:text-white'}`}>
+            Home
+          </Link>
+          <Link href="/about" className={`text-sm font-medium transition-colors ${pathname === '/about' ? 'text-white' : 'text-white/70 hover:text-white'}`}>
+            About
+          </Link>
+          <Link href="/novaos" className={`text-sm font-medium transition-colors ${pathname === '/novaos' ? 'text-white' : 'text-white/70 hover:text-white'}`}>
+            NovaOS
+          </Link>
+          <Link href="/press" className={`text-sm font-medium transition-colors ${pathname === '/press' ? 'text-white' : 'text-white/70 hover:text-white'}`}>
+            Press
+          </Link>
         </nav>
 
-        <div className="flex items-center gap-2 md:gap-4">
-          <ThemeToggle />
-          
-          {!loading && (
-            <>
-              {user ? (
-                <UserMenu />
-              ) : (
-                <div className="hidden md:flex items-center gap-2">
-                  <Button
-                    variant="ghost"
-                    onClick={() => {
-                      setAuthView('signin');
-                      setIsAuthModalOpen(true);
-                    }}
-                  >
-                    <LogIn className="w-4 h-4 mr-2" />
-                    Sign In
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setAuthView('signup');
-                      setIsAuthModalOpen(true);
-                    }}
-                  >
-                    Sign Up
-                  </Button>
-                </div>
-              )}
-            </>
-          )}
-          
-          <div className="hidden md:block">
-            <Button onClick={handleJoinMovement} className="group" aria-label="Join the Movement">
-              Join the Movement
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+        {/* Right side - CTA and mobile menu */}
+        <div className="flex items-center gap-2 md:gap-4 flex-shrink-0">
+          {/* Primary CTA - Hidden on mobile to save space */}
+          <div className="hidden lg:block">
+            <Button 
+              onClick={handleJoinMovement} 
+              className="bg-white text-black hover:bg-white/90 font-semibold rounded-full px-6 py-2.5 h-auto transition-all group"
+              aria-label="Join waitlist"
+            >
+              <span className="text-sm">Join Waitlist</span>
+              <ArrowRight className="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Button>
           </div>
+          
+          {/* Mobile menu button */}
           <Button 
             variant="ghost" 
             size="icon" 
@@ -141,7 +125,7 @@ export function Navbar() {
         </div>
       </div>
       
-      {/* Mobile Navigation - Improved with animation */}
+      {/* Mobile Navigation - Clean and minimal */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div 
@@ -150,73 +134,48 @@ export function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden py-4 px-6 bg-background border-t border-border"
+            className="md:hidden py-4 px-4 bg-background border-t border-border/50"
           >
-            <nav className="flex flex-col space-y-4">
+            <nav className="flex flex-col space-y-3">
               <Link
                 href="/"
-                className={`text-foreground/80 hover:text-primary transition-colors py-2 ${pathname === '/' ? 'text-primary' : ''}`}
+                className={`text-sm font-medium py-2 transition-colors ${pathname === '/' ? 'text-white' : 'text-white/70 hover:text-white'}`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 Home
               </Link>
               <Link
                 href="/about"
-                className={`text-foreground/80 hover:text-primary transition-colors py-2 ${pathname === '/about' ? 'text-primary' : ''}`}
+                className={`text-sm font-medium py-2 transition-colors ${pathname === '/about' ? 'text-white' : 'text-white/70 hover:text-white'}`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                About Us
+                About
               </Link>
               <Link
                 href="/novaos"
-                className={`text-foreground/80 hover:text-primary transition-colors py-2 ${pathname === '/novaos' ? 'text-primary' : ''}`}
+                className={`text-sm font-medium py-2 transition-colors ${pathname === '/novaos' ? 'text-white' : 'text-white/70 hover:text-white'}`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 NovaOS
               </Link>
               <Link
-                href="/contact"
-                className={`text-foreground/80 hover:text-primary transition-colors py-2 ${pathname === '/contact' ? 'text-primary' : ''}`}
+                href="/press"
+                className={`text-sm font-medium py-2 transition-colors ${pathname === '/press' ? 'text-white' : 'text-white/70 hover:text-white'}`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                Contact Us
+                Press
               </Link>
-              <Link
-                href="/affiliate"
-                className={`text-foreground/80 hover:text-primary transition-colors py-2 ${pathname === '/affiliate' ? 'text-primary' : ''}`}
-                onClick={() => setIsMenuOpen(false)}
+              
+              {/* Mobile CTA */}
+              <Button 
+                onClick={() => {
+                  handleJoinMovement();
+                  setIsMenuOpen(false);
+                }} 
+                className="w-full mt-4 bg-white text-black hover:bg-white/90 font-semibold rounded-full py-3 group"
               >
-                Affiliate
-              </Link>
-              {!loading && !user && (
-                <>
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setAuthView('signin');
-                      setIsAuthModalOpen(true);
-                      setIsMenuOpen(false);
-                    }}
-                    className="w-full"
-                  >
-                    <LogIn className="w-4 h-4 mr-2" />
-                    Sign In
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setAuthView('signup');
-                      setIsAuthModalOpen(true);
-                      setIsMenuOpen(false);
-                    }}
-                    className="w-full"
-                  >
-                    Sign Up
-                  </Button>
-                </>
-              )}
-              <Button onClick={handleJoinMovement} className="w-full mt-2 group">
-                Join the Movement 
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                <span>Join Waitlist</span>
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Button>
             </nav>
           </motion.div>

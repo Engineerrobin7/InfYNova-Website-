@@ -120,3 +120,237 @@ export const trackEngagementTime = (pageName: string, seconds: number) => {
     });
   }
 };
+
+// Track scroll depth
+export const trackScrollDepth = (percentage: number, page: string) => {
+  if (typeof window !== 'undefined') {
+    if (window.gtag) {
+      window.gtag('event', 'scroll_depth', {
+        event_category: 'engagement',
+        event_label: `${page} - ${percentage}%`,
+        value: percentage,
+      });
+    }
+
+    if (window.clarity) {
+      window.clarity('event', 'scroll_depth', { percentage, page });
+    }
+  }
+};
+
+// Track section views (waitlist, FAQ, roadmap, etc.)
+export const trackSectionView = (sectionName: string) => {
+  if (typeof window !== 'undefined') {
+    if (window.gtag) {
+      window.gtag('event', 'section_view', {
+        event_category: 'engagement',
+        event_label: sectionName,
+      });
+    }
+
+    if (window.clarity) {
+      window.clarity('event', 'section_view', { section: sectionName });
+    }
+
+    console.log('📊 Viewed section:', sectionName);
+  }
+};
+
+// Track FAQ accordion interactions
+export const trackFAQInteraction = (questionIndex: number, expanded: boolean) => {
+  if (typeof window !== 'undefined') {
+    if (window.gtag) {
+      window.gtag('event', 'faq_interaction', {
+        event_category: 'engagement',
+        event_label: `FAQ #${questionIndex} - ${expanded ? 'Expanded' : 'Collapsed'}`,
+        value: expanded ? 1 : 0,
+      });
+    }
+
+    if (window.clarity) {
+      window.clarity('event', 'faq_interaction', { questionIndex, expanded });
+    }
+
+    console.log('📊 FAQ interaction - Q#' + questionIndex + ':', expanded ? 'opened' : 'closed');
+  }
+};
+
+// Track roadmap section views
+export const trackRoadmapView = (quarterYear: string) => {
+  if (typeof window !== 'undefined') {
+    if (window.gtag) {
+      window.gtag('event', 'roadmap_view', {
+        event_category: 'engagement',
+        event_label: quarterYear,
+      });
+    }
+
+    if (window.clarity) {
+      window.clarity('event', 'roadmap_view', { quarterYear });
+    }
+
+    console.log('📊 Viewed roadmap milestone:', quarterYear);
+  }
+};
+
+// Track waitlist join
+export const trackWaitlistJoin = (source: string = 'organic') => {
+  if (typeof window !== 'undefined') {
+    if (window.gtag) {
+      window.gtag('event', 'waitlist_join', {
+        event_category: 'conversion',
+        event_label: `Joined from ${source}`,
+        value: 1,
+      });
+    }
+
+    if (window.clarity) {
+      window.clarity('event', 'waitlist_join', { source });
+    }
+
+    console.log('📊 User joined waitlist from:', source);
+  }
+};
+
+// Track pre-order click (leading indicator)
+export const trackPreOrderClick = (source: string) => {
+  if (typeof window !== 'undefined') {
+    if (window.gtag) {
+      window.gtag('event', 'pre_order_click', {
+        event_category: 'conversion',
+        event_label: `Pre-order from ${source}`,
+      });
+    }
+
+    if (window.clarity) {
+      window.clarity('event', 'pre_order_click', { source });
+    }
+
+    console.log('📊 Pre-order clicked from:', source);
+  }
+};
+
+// Track testimonial view
+export const trackTestimonialView = (testimonialIndex: number) => {
+  if (typeof window !== 'undefined') {
+    if (window.gtag) {
+      window.gtag('event', 'testimonial_view', {
+        event_category: 'engagement',
+        event_label: `Testimonial #${testimonialIndex}`,
+      });
+    }
+
+    if (window.clarity) {
+      window.clarity('event', 'testimonial_view', { testimonialIndex });
+    }
+  }
+};
+
+// Track NovaOS learn section
+export const trackNovaOSLearn = (stepNumber: number) => {
+  if (typeof window !== 'undefined') {
+    if (window.gtag) {
+      window.gtag('event', 'novaos_learn', {
+        event_category: 'engagement',
+        event_label: `NovaOS Step ${stepNumber}`,
+      });
+    }
+
+    if (window.clarity) {
+      window.clarity('event', 'novaos_learn', { stepNumber });
+    }
+
+    console.log('📊 Learned about NovaOS step:', stepNumber);
+  }
+};
+
+// Track founder story engagement
+export const trackFounderStoryView = () => {
+  if (typeof window !== 'undefined') {
+    if (window.gtag) {
+      window.gtag('event', 'founder_story_view', {
+        event_category: 'engagement',
+        event_label: 'Why InfyNova Exists',
+      });
+    }
+
+    if (window.clarity) {
+      window.clarity('event', 'founder_story_view');
+    }
+
+    console.log('📊 Viewed founder story');
+  }
+};
+
+// Track sticky CTA interaction (mobile)
+export const trackStickyCTAInteraction = (action: 'view' | 'click' | 'dismiss') => {
+  if (typeof window !== 'undefined') {
+    if (window.gtag) {
+      window.gtag('event', 'sticky_cta', {
+        event_category: 'engagement',
+        event_label: `Sticky CTA - ${action}`,
+      });
+    }
+
+    if (window.clarity) {
+      window.clarity('event', 'sticky_cta', { action });
+    }
+
+    console.log('📊 Sticky CTA interaction:', action);
+  }
+};
+
+// Track press/media mention click
+export const trackPressMentionClick = (source: string) => {
+  if (typeof window !== 'undefined') {
+    if (window.gtag) {
+      window.gtag('event', 'press_mention_click', {
+        event_category: 'engagement',
+        event_label: source,
+      });
+    }
+
+    if (window.clarity) {
+      window.clarity('event', 'press_mention_click', { source });
+    }
+
+    console.log('📊 Clicked press mention:', source);
+  }
+};
+
+// Track video play (if added later)
+export const trackVideoPlay = (videoTitle: string, location: string) => {
+  if (typeof window !== 'undefined') {
+    if (window.gtag) {
+      window.gtag('event', 'video_play', {
+        event_category: 'engagement',
+        event_label: videoTitle,
+        event_location: location,
+      });
+    }
+
+    if (window.clarity) {
+      window.clarity('event', 'video_play', { videoTitle, location });
+    }
+
+    console.log('📊 Video playing:', videoTitle);
+  }
+};
+
+// Track link click to legal pages
+export const trackLegalPageClick = (pageName: 'privacy' | 'terms') => {
+  if (typeof window !== 'undefined') {
+    if (window.gtag) {
+      window.gtag('event', 'legal_page_click', {
+        event_category: 'engagement',
+        event_label: pageName.toUpperCase(),
+      });
+    }
+
+    if (window.clarity) {
+      window.clarity('event', 'legal_page_click', { pageName });
+    }
+
+    console.log('📊 Clicked legal page:', pageName);
+  }
+};

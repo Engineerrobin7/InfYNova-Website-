@@ -1,267 +1,92 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { Card, CardContent } from "./ui/card";
+import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { motion, AnimatePresence, Variants } from "framer-motion";
-import { useInView } from "react-intersection-observer";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function SpecsSection() {
   const [selectedTab, setSelectedTab] = useState("pro");
-  const { ref: sectionRef, inView: isVisible } = useInView({
-    threshold: 0.1,
-    triggerOnce: false,
-  });
   
-  const phoneModels = {
-    standard: { color: "from-background via-secondary to-secondary/50" },
-    pro: { color: "from-background via-primary/20 to-primary/40" },
-    ultra: { color: "from-background via-accent/30 to-accent/50" }
-  };
-  
-  const tabVariants: Variants = {
-    inactive: {
-      opacity: 0.6,
-      scale: 0.95,
-      transition: { duration: 0.3 }
-    },
-    active: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.3 }
-    }
-  };
-  
-  const contentVariants: Variants = {
-    hidden: { 
-      opacity: 0,
-      x: 20,
-      rotateY: 15
-    },
-    visible: { 
-      opacity: 1,
-      x: 0,
-      rotateY: 0,
-      transition: { 
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
-        duration: 0.5
-      }
-    },
-    exit: {
-      opacity: 0,
-      x: -20,
-      rotateY: -15,
-      transition: { duration: 0.3 }
-    }
-  };
-  
-  const phoneVariants: Variants = {
-    initial: { rotateY: 0 },
-    animate: {
-      rotateY: [0, 10, 0, -10, 0],
-      transition: {
-        duration: 5,
-        repeat: Infinity,
-        repeatType: "loop",
-        ease: "easeInOut"
-      }
-    }
-  };
-
   return (
-    <motion.section 
-      id="specs" 
-      className="py-20 relative"
-      ref={sectionRef}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: isVisible ? 1 : 0 }}
-      transition={{ duration: 0.8 }}
-    >
-      <div className="container mx-auto px-4">
-        <motion.div 
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.5 }}
-        >
-          <motion.h2 
-            className="text-3xl md:text-4xl font-bold mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary/90 to-accent">
-              Technical Specifications
-            </span>
-          </motion.h2>
-          <motion.p 
-            className="text-foreground/70 max-w-xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            Compare our models to find the perfect Infynova smartphone for you.
-          </motion.p>
-        </motion.div>
+    <section id="specs" className="py-32 bg-black border-t border-white/10">
+      <div className="container mx-auto px-6 max-w-5xl">
+        <div className="text-center mb-16">
+          <h2 className="heading-xl tracking-tight text-white mb-6">
+            Compare models.
+          </h2>
+          <p className="body-lg mx-auto max-w-xl text-muted-foreground">
+            Find the InfYNova that perfectly fits your workflow.
+          </p>
+        </div>
         
-        <div className="w-full max-w-3xl mx-auto perspective-1000">
+        <div className="w-full">
           <Tabs 
             defaultValue="pro" 
             className="w-full"
             value={selectedTab}
             onValueChange={setSelectedTab}
           >
-            <TabsList className="grid w-full grid-cols-3 mb-8">
-              {["standard", "pro", "ultra"].map(tab => (
-                <motion.div
-                  key={tab}
-                  variants={tabVariants}
-                  animate={selectedTab === tab ? "active" : "inactive"}
-                  className="w-full"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <TabsTrigger value={tab} className="w-full">
-                    {tab === "standard" ? "Infynova" : tab === "pro" ? "Infynova Pro" : "Infynova Ultra"}
-                  </TabsTrigger>
-                </motion.div>
-              ))}
-            </TabsList>
+            <div className="flex justify-center mb-12">
+               <TabsList className="bg-[#111111] border border-white/10 p-1 rounded-full h-auto">
+                 {["standard", "pro", "ultra"].map(tab => (
+                    <TabsTrigger 
+                       key={tab} 
+                       value={tab} 
+                       className="rounded-full px-6 py-2 md:px-10 md:py-3 text-sm md:text-base font-medium data-[state=active]:bg-white data-[state=active]:text-black text-white/50 transition-all capitalize"
+                    >
+                      {tab === "standard" ? "Infynova" : `Infynova ${tab}`}
+                    </TabsTrigger>
+                 ))}
+               </TabsList>
+            </div>
             
-            <div className="relative perspective-1000">
+            <div className="relative">
               <AnimatePresence mode="wait">
                 {["standard", "pro", "ultra"].map(tab => (
                   selectedTab === tab && (
                     <motion.div
                       key={tab}
-                      variants={contentVariants}
-                      initial="hidden"
-                      animate="visible"
-                      exit="exit"
-                      className="transform-gpu"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                      className="bg-[#0A0A0A] border border-white/10 rounded-3xl p-8 md:p-16"
                     >
-                      <Card className="bg-background/40 backdrop-blur-sm border border-border/50 shadow-lg">
-                        <CardContent className="p-6">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                              <h3 className="text-xl font-bold mb-4">
-                                {tab === "standard" ? "Infynova" : tab === "pro" ? "Infynova Pro" : "Infynova Ultra"}
-                              </h3>
-                              <ul className="space-y-3">
-                                <motion.li 
-                                  className="flex justify-between"
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: 0.1 }}
-                                >
-                                  <span className="text-foreground/70">Display</span>
-                                  <span>
-                                    {tab === "standard" 
-                                      ? "6.1\" OLED" 
-                                      : tab === "pro" 
-                                        ? "6.5\" AMOLED 120Hz" 
-                                        : "6.9\" Dynamic AMOLED 144Hz"}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                        <div>
+                          <ul className="space-y-6 divide-y divide-white/10">
+                            {[
+                               { label: "Display", standard: "6.1\" OLED", pro: "6.5\" AMOLED 120Hz", ultra: "6.9\" Dynamic AMOLED 144Hz" },
+                               { label: "Processor", standard: "A1 Bionic", pro: "A2 Pro Neural", ultra: "A3 Ultra Quantum" },
+                               { label: "Memory", standard: "8GB Unified memory", pro: "12GB Unified memory", ultra: "16GB Unified memory" },
+                               { label: "Storage", standard: "Up to 256GB", pro: "Up to 512GB", ultra: "Up to 1TB" },
+                               { label: "Camera", standard: "Dual 48MP system", pro: "Pro 48MP system", ultra: "Pro 108MP system" },
+                               { label: "Battery", standard: "4,000 mAh", pro: "4,800 mAh", ultra: "5,500 mAh" }
+                            ].map((spec, i) => (
+                               <li key={i} className="flex justify-between items-center pt-6 first:pt-0">
+                                 <span className="text-white/50 text-sm">{spec.label}</span>
+                                 <span className="text-white font-medium text-right max-w-[200px]">
+                                   {tab === "standard" ? spec.standard : tab === "pro" ? spec.pro : spec.ultra}
+                                 </span>
+                               </li>
+                            ))}
+                          </ul>
+                        </div>
+                        
+                        <div className="flex items-center justify-center">
+                          {/* Minimalist Phone Vector inside Card instead of bloated rotating 3d cube */}
+                           <div className="w-[200px] h-[420px] rounded-[3rem] border-4 border-[#333] bg-black p-2 shadow-2xl relative">
+                              <div className="w-full h-full rounded-[2.5rem] bg-gradient-to-tr from-[#111] to-[#222] flex flex-col items-center justify-center border border-white/5 relative overflow-hidden">
+                                  {/* Dynamic Island style cutout */}
+                                  <div className="absolute top-4 w-1/3 h-5 bg-black rounded-full"></div>
+                                  
+                                  <span className="text-2xl font-bold tracking-tight text-white/20 select-none uppercase">
+                                    {tab === "standard" ? "SERIES 1" : tab === "pro" ? "PRO" : "ULTRA"}
                                   </span>
-                                </motion.li>
-                                <motion.li 
-                                  className="flex justify-between"
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: 0.2 }}
-                                >
-                                  <span className="text-foreground/70">Processor</span>
-                                  <span>
-                                    {tab === "standard" 
-                                      ? "Infynova A1" 
-                                      : tab === "pro" 
-                                        ? "Infynova A2 Pro" 
-                                        : "Infynova A3 Ultra"}
-                                  </span>
-                                </motion.li>
-                                <motion.li 
-                                  className="flex justify-between"
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: 0.3 }}
-                                >
-                                  <span className="text-foreground/70">RAM</span>
-                                  <span>
-                                    {tab === "standard" ? "8GB" : tab === "pro" ? "12GB" : "16GB"}
-                                  </span>
-                                </motion.li>
-                                <motion.li 
-                                  className="flex justify-between"
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: 0.4 }}
-                                >
-                                  <span className="text-foreground/70">Storage</span>
-                                  <span>
-                                    {tab === "standard" ? "128GB" : tab === "pro" ? "256GB" : "512GB"}
-                                  </span>
-                                </motion.li>
-                                <motion.li 
-                                  className="flex justify-between"
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: 0.5 }}
-                                >
-                                  <span className="text-foreground/70">Camera</span>
-                                  <span className="text-right max-w-[200px]">
-                                    {tab === "standard" 
-                                      ? "48MP Main, 12MP Ultra-wide" 
-                                      : tab === "pro" 
-                                        ? "108MP Main, 16MP Ultra-wide, 8MP Telephoto" 
-                                        : "200MP Main, 50MP Ultra-wide, 20MP Telephoto"}
-                                  </span>
-                                </motion.li>
-                                <motion.li 
-                                  className="flex justify-between"
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: 0.6 }}
-                                >
-                                  <span className="text-foreground/70">Battery</span>
-                                  <span>
-                                    {tab === "standard" ? "4,000 mAh" : tab === "pro" ? "4,800 mAh" : "5,500 mAh"}
-                                  </span>
-                                </motion.li>
-                                <motion.li 
-                                  className="flex justify-between"
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: 0.7 }}
-                                >
-                                  <span className="text-foreground/70">Charging</span>
-                                  <span>
-                                    {tab === "standard" ? "45W Fast Charging" : tab === "pro" ? "65W Fast Charging" : "100W Fast Charging"}
-                                  </span>
-                                </motion.li>
-                              </ul>
-                            </div>
-                            <div className="flex items-center justify-center">
-                              <motion.div 
-                                className={`w-48 h-96 rounded-3xl bg-gradient-to-br ${phoneModels[tab as keyof typeof phoneModels].color} flex items-center justify-center border-4 border-background shadow-lg transform-gpu`}
-                                initial="initial"
-                                animate="animate"
-                                variants={phoneVariants}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 1.05 }}
-                              >
-                                <span className="text-xl font-bold text-gradient select-none">
-                                  {tab === "standard" 
-                                    ? "INFYNOVA" 
-                                    : tab === "pro" 
-                                      ? "INFYNOVA PRO" 
-                                      : "INFYNOVA ULTRA"}
-                                </span>
-                              </motion.div>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
+                              </div>
+                           </div>
+                        </div>
+                      </div>
                     </motion.div>
                   )
                 ))}
@@ -270,19 +95,6 @@ export function SpecsSection() {
           </Tabs>
         </div>
       </div>
-      
-      <motion.div 
-        className="absolute top-1/3 left-0 w-96 h-96 bg-primary/10 rounded-full filter blur-3xl -z-10"
-        animate={{
-          x: [0, 30, 0],
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          repeatType: "reverse"
-        }}
-      ></motion.div>
-    </motion.section>
+    </section>
   );
 }

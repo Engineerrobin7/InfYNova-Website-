@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "../components/navbar";
 import { Footer } from "../components/Footer";
 import { Check, Sparkles, Gift, Truck, Shield } from "lucide-react";
 import { ProductHuntBadge } from "../components/product-hunt-badge";
 import { toast } from "sonner";
-import { useEffect, useRef } from "react";
 
 declare global {
   interface Window {
@@ -87,6 +86,114 @@ export default function PreOrderPage() {
   };
 
   const [submitting, setSubmitting] = useState(false);
+  const [paymentLoading, setPaymentLoading] = useState(false);
+
+  const loadRazorpayScript = async () => {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+
+    if ((window as any).Razorpay) {
+      return true;
+    }
+
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.async = true;
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const verifyPayment = async (payload: {
+    razorpay_payment_id: string;
+    razorpay_order_id: string;
+    razorpay_signature: string;
+    preOrderId: string;
+    email: string;
+    name: string;
+    modelName: string;
+    price: number;
+  }) => {
+    const response = await fetch('/api/payment/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    return response.json();
+  };
+
+  const openRazorpayCheckout = async (order: any, preOrderId: string) => {
+    if (typeof window === 'undefined') {
+      throw new Error('Browser environment required');
+    }
+
+    const scriptLoaded = await loadRazorpayScript();
+    if (!scriptLoaded) {
+      throw new Error('Unable to load Razorpay checkout');
+    }
+
+    return new Promise<void>((resolve, reject) => {
+      const Razorpay = (window as any).Razorpay;
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: order.amount,
+        currency: order.currency,
+        name: 'InfYNova',
+        description: `Pre-order ${models[selectedModel as keyof typeof models].name}`,
+        image: '/logo.svg',
+        order_id: order.id,
+        prefill: {
+          name: formData.name,
+          email: formData.email,
+          contact: formData.phone,
+        },
+        theme: {
+          color: '#005f73',
+        },
+        handler: async (response: any) => {
+          try {
+            setPaymentLoading(true);
+            const result = await verifyPayment({
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature,
+              preOrderId,
+              email: formData.email,
+              name: formData.name,
+              modelName: models[selectedModel as keyof typeof models].name,
+              price: models[selectedModel as keyof typeof models].discountPrice,
+            });
+
+            if (result.success) {
+              toast.success('Payment confirmed! We have emailed your receipt.');
+              resolve();
+            } else {
+              toast.error('Payment verification failed. Please contact support.');
+              reject(new Error(result.error || 'Verification failed'));
+            }
+          } catch (error) {
+            console.error('Payment verification error:', error);
+            toast.error('Payment verification error. Please try again.');
+            reject(error);
+          } finally {
+            setPaymentLoading(false);
+          }
+        },
+        modal: {
+          ondismiss: () => {
+            reject(new Error('Payment was cancelled'));
+          },
+        },
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -134,12 +241,49 @@ export default function PreOrderPage() {
           });
         }
 
-        toast.success("Pre-order Submitted!", {
-          description: `Order #${data.orderNumber}. Check your email for confirmation.`,
-          duration: 5000,
-        });
+        const razorpayEnabled = Boolean(process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID);
 
-        // Reset form
+        if (razorpayEnabled) {
+          try {
+            const paymentResponse = await fetch('/api/payment/create-order', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                amount: data.data.price,
+                currency: 'INR',
+                receipt: data.orderId,
+                name: formData.name,
+                email: formData.email,
+                contact: formData.phone,
+                notes: {
+                  model: data.data.model,
+                },
+              }),
+            });
+
+            const paymentData = await paymentResponse.json();
+            if (paymentData.success && paymentData.order) {
+              await openRazorpayCheckout(paymentData.order, data.orderId);
+            } else {
+              toast.success("Pre-order Submitted!", {
+                description: `Order #${data.orderNumber}. Check your email for confirmation.`,
+                duration: 5000,
+              });
+              console.error('Razorpay create order failed:', paymentData.error);
+            }
+          } catch (paymentError) {
+            console.error('Razorpay checkout error:', paymentError);
+            toast.error('Payment not completed. Your order is saved and we will follow up by email.');
+          }
+        } else {
+          toast.success("Pre-order Submitted!", {
+            description: `Order #${data.orderNumber}. Check your email for confirmation.`,
+            duration: 5000,
+          });
+        }
+
         setFormData({
           name: "",
           email: "",
@@ -358,22 +502,21 @@ export default function PreOrderPage() {
 
                 <button
                   type="submit"
-                  disabled={submitting}
+                  disabled={submitting || paymentLoading}
                   className="w-full bg-gradient-to-r from-primary to-accent text-white font-semibold py-4 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {submitting ? (
+                  {submitting || paymentLoading ? (
                     <span className="flex items-center justify-center gap-2">
                       <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Submitting...
+                      {paymentLoading ? 'Processing Payment...' : 'Submitting...'}
                     </span>
                   ) : (
-                    'Complete Pre-Order'
+                    process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ? 'Pay Securely Now' : 'Complete Pre-Order'
                   )}
                 </button>
 
                 <p className="text-xs text-muted-foreground text-center">
-                  By pre-ordering, you agree to our terms and conditions. 
-                  No payment required now. Pay on delivery.
+                  By pre-ordering, you agree to our terms and conditions. {process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ? 'Secure payment powered by Razorpay.' : 'No payment required now. Pay on delivery.'}
                 </p>
               </form>
             </div>

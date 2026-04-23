@@ -89,9 +89,11 @@ export const SignUpForm = ({ onSuccess, onSwitchToSignIn }: SignUpFormProps) => 
             <input
               type="text"
               name="displayName"
+              autoComplete="name"
               value={formData.displayName}
               onChange={handleChange}
               required
+              autoFocus
               className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
               placeholder="John Doe"
             />
@@ -136,6 +138,7 @@ export const SignUpForm = ({ onSuccess, onSwitchToSignIn }: SignUpFormProps) => 
             <input
               type={showPassword ? 'text' : 'password'}
               name="password"
+              autoComplete="new-password"
               value={formData.password}
               onChange={handleChange}
               required

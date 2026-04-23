@@ -3,6 +3,7 @@ import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 import { rateLimit, getClientIdentifier, RATE_LIMITS } from '@/app/lib/rate-limit';
 import { verifyCaptcha, checkHoneypot } from '@/app/lib/captcha';
+import { sendContactNotification, sendContactConfirmation } from '@/app/lib/email';
 
 // Initialize Firebase Admin
 let db: any = null;
@@ -109,8 +110,14 @@ export async function POST(request: NextRequest) {
 
     const docRef = await db.collection('contact_submissions').add(contactSubmission);
 
-    // TODO: Send confirmation email to user
-    // TODO: Send notification to admin
+    try {
+      await Promise.all([
+        sendContactNotification(contactSubmission),
+        sendContactConfirmation(contactSubmission.email, contactSubmission.name),
+      ]);
+    } catch (emailError) {
+      console.error('Contact email notification error:', emailError);
+    }
 
     return NextResponse.json({
       success: true,

@@ -1,266 +1,121 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trophy, Flame, Gift, Share2, Camera, Zap, X } from "lucide-react";
+import { Camera, Zap, X } from "lucide-react";
 import { SubmitChallengeEntry } from "./submit-challenge-entry";
 
 export function ViralChallenges() {
   const [activeChallenge, setActiveChallenge] = useState<number | null>(null);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
 
-  // Generate static positions to avoid hydration mismatch
-  const floatingElements = useMemo(() => {
-    const emojis = ["🔥", "⚡", "🎉", "🏆", "✨"];
-    return [...Array(30)].map((_, i) => {
-      // Better distribution using golden ratio
-      const goldenRatio = 1.618033988749895;
-      return {
-        left: ((i * goldenRatio * 100) % 100),
-        top: ((i * goldenRatio * 73) % 100),
-        duration: 3 + (i % 3),
-        delay: (i % 5) * 0.4,
-        emoji: emojis[i % emojis.length]
-      };
-    });
-  }, []);
-
   const challenges = [
     {
       id: 1,
       title: "#InfyNovaUnboxChallenge",
-      description: "Show us your most creative unboxing video",
-      prize: "Win InfyNova Pro + ₹50,000",
+      description: "Show us your most creative unboxing video.",
+      prize: "InfyNova Pro + ₹50,000",
       participants: 15847,
       deadline: "3 days left",
-      icon: "📦",
-      color: "from-purple-500 to-pink-500",
       trending: true
     },
     {
       id: 2,
       title: "#NovaOSDanceChallenge",
-      description: "Create a dance video with our NovaOS theme song",
-      prize: "₹25,000 + Featured on our page",
+      description: "Create a dance video with our NovaOS theme song.",
+      prize: "₹25,000 + Featured",
       participants: 28934,
       deadline: "5 days left",
-      icon: "💃",
-      color: "from-blue-500 to-cyan-500",
       trending: true
     },
     {
       id: 3,
       title: "#AIPhoneArtChallenge",
-      description: "Design AI-generated art using our theme",
-      prize: "₹15,000 + Free NovaOS Premium",
+      description: "Design AI-generated art using our NovaOS theme.",
+      prize: "₹15,000 + NovaOS Premium",
       participants: 9234,
       deadline: "7 days left",
-      icon: "🎨",
-      color: "from-orange-500 to-red-500",
       trending: false
     },
     {
       id: 4,
-      title: "#InfyNovaMemeChallenge",
-      description: "Create the funniest InfyNova meme",
+      title: "#InfyNovaDesignSprint",
+      description: "Create an icon pack for the next OS update.",
       prize: "₹10,000 + Merchandise",
       participants: 34521,
       deadline: "2 days left",
-      icon: "😂",
-      color: "from-green-500 to-emerald-500",
       trending: true
     }
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-background via-accent/5 to-background relative overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 pointer-events-none">
-        {floatingElements.map((element, i) => (
-          <motion.div
-            key={`float-${i}`}
-            className="absolute text-2xl select-none"
-            style={{
-              left: `${element.left}%`,
-              top: `${element.top}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0.3, 0.6, 0.3],
-            }}
-            transition={{
-              duration: element.duration,
-              repeat: Infinity,
-              delay: element.delay,
-              ease: "easeInOut",
-            }}
-          >
-            {element.emoji}
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="container mx-auto px-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-full mb-4 border border-orange-500/30">
-            <Flame className="w-4 h-4 text-orange-500" />
-            <span className="text-sm font-semibold text-orange-500">TRENDING NOW</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Viral Challenges
+    <section className="relative overflow-hidden w-full">
+      <div className="container mx-auto px-6 max-w-6xl">
+        <div className="text-center mb-16">
+          <h2 className="heading-lg tracking-tight mb-4">
+            Creative challenges.
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Join our viral challenges, win amazing prizes, and get featured on our social media!
+          <p className="body-lg max-w-2xl mx-auto text-muted-foreground">
+            A blank canvas for your creativity. Enter one of the ongoing challenges to win exclusive hardware drops and grand prizes.
           </p>
-          <div className="flex items-center justify-center gap-6 mt-6">
-            <div className="flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-yellow-500" />
-              <span className="text-sm">
-                <span className="font-bold">₹2.5 Lakhs</span> in prizes
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Flame className="w-5 h-5 text-orange-500" />
-              <span className="text-sm">
-                <span className="font-bold">88,536</span> participants
-              </span>
-            </div>
-          </div>
-        </motion.div>
+        </div>
 
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-6 mb-12">
+        <div className="grid md:grid-cols-2 gap-6 relative">
           {challenges.map((challenge, index) => (
             <motion.div
               key={challenge.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="relative bg-card border border-border rounded-2xl p-6 hover:shadow-xl transition-all group cursor-pointer"
+              transition={{ delay: index * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-[#0A0A0A] border border-white/10 rounded-3xl p-8 hover:bg-[#111] transition-colors cursor-pointer group flex flex-col justify-between"
               onClick={() => setActiveChallenge(challenge.id)}
             >
-              {challenge.trending && (
-                <motion.div
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="absolute -top-3 -right-3 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 shadow-lg"
-                >
-                  <Flame className="w-3 h-3" />
-                  TRENDING
-                </motion.div>
-              )}
-
-              <div className="flex items-start gap-4 mb-4">
-                <div className="text-5xl">{challenge.icon}</div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition">
-                    {challenge.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-3">
-                    {challenge.description}
-                  </p>
-                  <div className={`inline-block bg-gradient-to-r ${challenge.color} text-white text-sm font-semibold px-4 py-2 rounded-full`}>
-                    🏆 {challenge.prize}
-                  </div>
-                </div>
+              <div>
+                 <div className="flex justify-between items-start mb-6">
+                    <h3 className="text-2xl font-semibold text-white tracking-tight">{challenge.title}</h3>
+                    {challenge.trending && (
+                      <span className="text-xs uppercase tracking-widest text-[#fff] bg-white/10 px-3 py-1 rounded-full whitespace-nowrap">
+                         Trending
+                      </span>
+                    )}
+                 </div>
+                 <p className="text-white/50 text-lg mb-8 leading-relaxed">
+                   {challenge.description}
+                 </p>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-border">
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                  <span className="flex items-center gap-1">
+              <div>
+                <div className="flex justify-between items-center mb-6">
+                  <span className="text-white text-sm font-medium">Prize Pool</span>
+                  <span className="text-white border border-white/20 rounded-full px-4 py-1 text-sm">{challenge.prize}</span>
+                </div>
+                
+                <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                  <div className="flex items-center gap-2 text-sm text-white/40">
                     <Zap className="w-4 h-4" />
-                    {challenge.participants.toLocaleString()} joined
-                  </span>
-                  <span className="text-orange-500 font-semibold">
-                    ⏰ {challenge.deadline}
+                    <span>{challenge.participants.toLocaleString()} joined</span>
+                  </div>
+                  <span className="text-white/40 text-sm font-mono">
+                    {challenge.deadline}
                   </span>
                 </div>
-              </div>
 
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActiveChallenge(challenge.id);
-                  setShowSubmitModal(true);
-                }}
-                className="w-full mt-4 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:opacity-90 transition font-semibold flex items-center justify-center gap-2"
-              >
-                <Camera className="w-5 h-5" />
-                Join Challenge
-              </motion.button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveChallenge(challenge.id);
+                    setShowSubmitModal(true);
+                  }}
+                  className="w-full mt-6 py-4 bg-white text-black rounded-xl hover:bg-neutral-200 transition font-medium flex items-center justify-center gap-2"
+                >
+                  <Camera className="w-4 h-4" />
+                  Submit Entry
+                </button>
+              </div>
             </motion.div>
           ))}
         </div>
-
-        {/* How to Participate */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="max-w-4xl mx-auto bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl p-8 border border-primary/30"
-        >
-          <h3 className="text-2xl font-bold mb-6 text-center">How to Participate</h3>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                step: "1",
-                title: "Create Content",
-                description: "Make your video, photo, or art",
-                icon: Camera
-              },
-              {
-                step: "2",
-                title: "Post & Tag",
-                description: "Share on Instagram/Twitter with hashtag",
-                icon: Share2
-              },
-              {
-                step: "3",
-                title: "Win Prizes",
-                description: "Winners announced every week",
-                icon: Gift
-              }
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="text-center"
-              >
-                <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
-                  {item.step}
-                </div>
-                <item.icon className="w-8 h-8 text-primary mx-auto mb-2" />
-                <h4 className="font-bold mb-2">{item.title}</h4>
-                <p className="text-sm text-muted-foreground">{item.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Recent Winners */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="mt-12 text-center"
-        >
-          <p className="text-sm text-muted-foreground mb-4">
-            🎉 Recent Winners: @rahul_tech (₹50K), @priya_creates (₹25K), @arjun_memes (₹15K)
-          </p>
-          <button className="px-6 py-3 bg-card border border-border rounded-lg hover:bg-muted transition font-semibold">
-            View All Winners
-          </button>
-        </motion.div>
       </div>
 
       {/* Submit Entry Modal */}
@@ -270,28 +125,31 @@ export function ViralChallenges() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4"
             onClick={() => setShowSubmitModal(false)}
           >
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-card border border-border rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative"
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-[#111] border border-white/10 rounded-3xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setShowSubmitModal(false)}
-                className="absolute top-4 right-4 p-2 hover:bg-muted rounded-full transition"
+                className="absolute top-6 right-6 p-2 hover:bg-white/10 rounded-full transition text-white"
               >
                 <X className="w-5 h-5" />
               </button>
               
-              <SubmitChallengeEntry
-                challengeId={activeChallenge}
-                hashtag={challenges.find(c => c.id === activeChallenge)?.title || ''}
-                onClose={() => setShowSubmitModal(false)}
-              />
+              <div className="mt-8">
+                 <SubmitChallengeEntry
+                   challengeId={activeChallenge}
+                   hashtag={challenges.find(c => c.id === activeChallenge)?.title || ''}
+                   onClose={() => setShowSubmitModal(false)}
+                 />
+              </div>
             </motion.div>
           </motion.div>
         )}

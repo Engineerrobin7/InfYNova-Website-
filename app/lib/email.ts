@@ -1,5 +1,4 @@
-// Email notification system using Resend
-// Install: npm install resend
+import nodemailer from 'nodemailer';
 
 interface EmailConfig {
   to: string;
@@ -8,8 +7,42 @@ interface EmailConfig {
   from?: string;
 }
 
-// Send email using Resend (recommended for Next.js)
-export async function sendEmail(config: EmailConfig): Promise<boolean> {
+const SMTP_HOST = process.env.SMTP_HOST;
+const SMTP_PORT = Number(process.env.SMTP_PORT || 587);
+const SMTP_USER = process.env.SMTP_USER;
+const SMTP_PASS = process.env.SMTP_PASS;
+const SMTP_FROM = process.env.SMTP_FROM || 'InfyNova <noreply@infynova.in>';
+
+async function sendSmtpEmail(config: EmailConfig): Promise<boolean> {
+  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
+    return false;
+  }
+
+  const transporter = nodemailer.createTransport({
+    host: SMTP_HOST,
+    port: SMTP_PORT,
+    secure: SMTP_PORT === 465,
+    auth: {
+      user: SMTP_USER,
+      pass: SMTP_PASS,
+    },
+  });
+
+  try {
+    await transporter.sendMail({
+      from: config.from || SMTP_FROM,
+      to: config.to,
+      subject: config.subject,
+      html: config.html,
+    });
+    return true;
+  } catch (error) {
+    console.error('SMTP email send error:', error);
+    return false;
+  }
+}
+
+async function sendResendEmail(config: EmailConfig): Promise<boolean> {
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
   if (!RESEND_API_KEY) {
@@ -25,7 +58,7 @@ export async function sendEmail(config: EmailConfig): Promise<boolean> {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: config.from || 'InfyNova <noreply@infynova.in>',
+        from: config.from || SMTP_FROM,
         to: config.to,
         subject: config.subject,
         html: config.html,
@@ -34,15 +67,25 @@ export async function sendEmail(config: EmailConfig): Promise<boolean> {
 
     if (!response.ok) {
       const error = await response.json();
-      console.error('Email send error:', error);
+      console.error('Resend email send error:', error);
       return false;
     }
 
     return true;
   } catch (error) {
-    console.error('Email send error:', error);
+    console.error('Resend email send error:', error);
     return false;
   }
+}
+
+export async function sendEmail(config: EmailConfig): Promise<boolean> {
+  if (SMTP_HOST && SMTP_USER && SMTP_PASS) {
+    const success = await sendSmtpEmail(config);
+    if (success) return true;
+    console.warn('SMTP email failed; falling back to Resend if available.');
+  }
+
+  return await sendResendEmail(config);
 }
 
 // Pre-order confirmation email
@@ -128,15 +171,21 @@ export async function sendContactNotification(
   const html = `
     <!DOCTYPE html>
     <html>
-    <body style="font-family: Arial, sans-serif;">
-      <h2>New Contact Form Submission</h2>
-      <p><strong>From:</strong> ${contactData.name}</p>
-      <p><strong>Email:</strong> ${contactData.email}</p>
-      <p><strong>Subject:</strong> ${contactData.subject}</p>
-      <p><strong>Message:</strong></p>
-      <p>${contactData.message.replace(/\n/g, '<br>')}</p>
-      <hr>
-      <p><small>Submitted at: ${new Date().toLocaleString()}</small></p>
+    <body style="font-family: Arial, sans-serif; color: #111; background: #f8f9fb; padding: 20px;">
+      <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 18px; overflow: hidden; box-shadow: 0 24px 80px rgba(0,0,0,0.08);">
+        <div style="background: linear-gradient(135deg, #00d4ff 0%, #005f73 100%); color: #fff; padding: 24px; text-align: center;">
+          <h2 style="margin: 0; font-size: 24px;">New Contact Form Submission</h2>
+        </div>
+        <div style="padding: 24px;">
+          <p><strong>From:</strong> ${contactData.name}</p>
+          <p><strong>Email:</strong> ${contactData.email}</p>
+          <p><strong>Subject:</strong> ${contactData.subject}</p>
+          <p><strong>Message:</strong></p>
+          <p style="white-space: pre-wrap;">${contactData.message.replace(/\n/g, '<br>')}</p>
+          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
+          <p style="font-size: 13px; color: #6b7280;">Submitted at: ${new Date().toLocaleString()}</p>
+        </div>
+      </div>
     </body>
     </html>
   `;
@@ -144,6 +193,80 @@ export async function sendContactNotification(
   return await sendEmail({
     to: adminEmail,
     subject: `Contact Form: ${contactData.subject}`,
+    html,
+  });
+}
+
+export async function sendContactConfirmation(
+  email: string,
+  name: string
+): Promise<boolean> {
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <body style="font-family: Arial, sans-serif; color: #111; background: #f7fafc; padding: 20px;">
+      <div style="max-width: 600px; margin: auto; background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 24px 80px rgba(0,0,0,0.08);">
+        <div style="background: linear-gradient(135deg, #00d4ff 0%, #005f73 100%); color: #fff; padding: 24px; text-align: center;">
+          <h2 style="margin: 0; font-size: 24px;">Thanks for reaching out, ${name}!</h2>
+        </div>
+        <div style="padding: 24px;">
+          <p>We received your message and will reply within 24 hours.</p>
+          <p>If you need urgent support, please email us at <a href="mailto:infynovaindia@gmail.com">infynovaindia@gmail.com</a>.</p>
+          <p>Thank you for choosing InfYNova.</p>
+          <div style="margin-top: 24px; padding: 16px; border: 1px solid #e5e7eb; border-radius: 12px; background: #f8fafc;">
+            <p style="margin: 0; font-weight: 600;">Support Team</p>
+            <p style="margin: 4px 0 0 0; color: #6b7280;">InfYNova India</p>
+          </div>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  return await sendEmail({
+    to: email,
+    subject: 'We received your request – InfYNova Support',
+    html,
+  });
+}
+
+export async function sendPaymentSuccessEmail(
+  email: string,
+  orderData: {
+    name: string;
+    orderNumber: string;
+    modelName: string;
+    price: number;
+  }
+): Promise<boolean> {
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <body style="font-family: Arial, sans-serif; color: #111; background: #f7fafc; padding: 20px;">
+      <div style="max-width: 600px; margin: auto; background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 24px 80px rgba(0,0,0,0.08);">
+        <div style="background: linear-gradient(135deg, #00d4ff 0%, #005f73 100%); color: #fff; padding: 24px; text-align: center;">
+          <h2 style="margin: 0; font-size: 24px;">Payment Received</h2>
+        </div>
+        <div style="padding: 24px;">
+          <p>Thank you for your payment, ${orderData.name}.</p>
+          <p>Your payment for the <strong>${orderData.modelName}</strong> has been confirmed.</p>
+          <div style="margin: 24px 0; padding: 20px; border-radius: 14px; background: #f8fafc; border: 1px solid #e5e7eb;">
+            <p style="margin: 0; font-weight: 600;">Order Number</p>
+            <p style="margin: 6px 0 0 0;">${orderData.orderNumber}</p>
+            <p style="margin: 16px 0 0 0; font-weight: 600;">Amount Paid</p>
+            <p style="margin: 6px 0 0 0;">₹${orderData.price.toLocaleString()}</p>
+          </div>
+          <p>We’ll update you with shipping details shortly. If you have questions, reply to this email any time.</p>
+          <p>Warm regards,<br>The InfYNova Team</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  return await sendEmail({
+    to: email,
+    subject: `Payment Confirmed – ${orderData.orderNumber}`,
     html,
   });
 }

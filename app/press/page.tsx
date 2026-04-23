@@ -80,19 +80,62 @@ export default function PressPage() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="max-w-3xl mx-auto bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl p-8 border border-primary/20 text-center"
+              className="max-w-3xl mx-auto bg-gradient-to-r from-white/5 to-white/[0.02] rounded-2xl p-8 border border-white/10 text-center"
             >
-              <Mail className="w-12 h-12 text-primary mx-auto mb-4" />
-              <h2 className="text-2xl font-bold mb-2">Media Inquiries</h2>
-              <p className="text-muted-foreground mb-4">
-                For press inquiries, interviews, or media requests, please contact:
+              <Mail className="w-12 h-12 text-blue-400 mx-auto mb-4" />
+              <h2 className="text-3xl font-bold mb-4 text-white">For Press & Media Inquiries</h2>
+              <p className="text-white/70 mb-6 text-lg">
+                Contact our PR team for interviews, reviews, partnerships, or media requests.
               </p>
-              <a href="mailto:press@infynova.in" className="text-primary font-semibold text-lg hover:underline">
-                press@infynova.in
-              </a>
-              <p className="text-sm text-muted-foreground mt-4">
-                Phone: +91 9896583808
-              </p>
+              <div className="space-y-3 mb-8">
+                <a href="mailto:press@infynova.in" className="block text-blue-400 font-semibold text-xl hover:text-blue-300 transition">
+                  press@infynova.in
+                </a>
+                <p className="text-white/60">
+                  Phone: +91 9896583808 · Available for media calls
+                </p>
+              </div>
+              <Button className="bg-white text-black hover:bg-white/90 font-semibold rounded-full px-8 py-3">
+                <Mail className="w-4 h-4 mr-2" />
+                Send Media Inquiry
+              </Button>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Quick Facts */}
+        <section className="py-20 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="max-w-4xl mx-auto"
+            >
+              <h2 className="text-3xl font-bold mb-12 text-center text-white">Company At a Glance</h2>
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 rounded-2xl p-8">
+                  <h3 className="text-xl font-bold text-white mb-6">About InfyNova</h3>
+                  <p className="text-white/70 leading-relaxed mb-4">
+                    InfyNova is building India's first truly intelligent smartphone. Precision-engineered. AI-powered. Privacy-first.
+                  </p>
+                  <p className="text-white/70 leading-relaxed">
+                    Our mission: Create technology that amplifies human potential, not replaces it. Every device reflects our commitment to innovation, quality, and the belief that India can lead the global tech revolution.
+                  </p>
+                </div>
+
+                <div className="bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 rounded-2xl p-8">
+                  <h3 className="text-xl font-bold text-white mb-6">Key Facts</h3>
+                  <ul className="space-y-3 text-white/70">
+                    <li>✓ <strong>Founded:</strong> 2024</li>
+                    <li>✓ <strong>Headquarters:</strong> India (Bangalore)</li>
+                    <li>✓ <strong>Core Product:</strong> InfyNova Smartphone</li>
+                    <li>✓ <strong>Custom OS:</strong> NovaOS</li>
+                    <li>✓ <strong>Key Feature:</strong> On-device Neural AI</li>
+                    <li>✓ <strong>Waitlist:</strong> 10,000+ supporters</li>
+                  </ul>
+                </div>
+              </div>
             </motion.div>
           </div>
         </section>
