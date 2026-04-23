@@ -33,7 +33,7 @@ export function FAQSection() {
     {
       question: "Why are you building this in India?",
       answer: "We're building InfyNova in India because we believe in proving that world-class innovation can happen here. We're leveraging India's deep tech talent, manufacturing expertise, and cost efficiency to create a phone that's globally competitive. Plus, being Made in India means we understand your needs locally."
-    },q 
+    },
     {
       question: "What are the hardware specs?",
       answer: "InfyNova features a 6.8\" AMOLED display, custom AI processor (faster than Snapdragon 8 Gen 3), 12GB RAM, up to 512GB storage, 50MP AI camera system, and a 6000mAh battery with 100W fast charging. Full specs available on our Press page."
