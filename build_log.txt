@@ -6,3 +6,4 @@
    - Environments: .env.production
 
    Creating an optimized production build ...
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/robinsingh/Desktop/InfYNova-Website-/.next/cache/webpack/edge-server-production/0.pack_' -> '/Users/robinsingh/Desktop/InfYNova-Website-/.next/cache/webpack/edge-server-production/0.pack'

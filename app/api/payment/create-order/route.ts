@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       amount: Math.round(Number(amount) * 100),
       currency,
       receipt,
-      payment_capture: 1,
+      payment_capture: true,
       notes: {
         customer_name: name || '',
         customer_email: email || '',
